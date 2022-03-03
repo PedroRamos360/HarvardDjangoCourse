@@ -1,13 +1,19 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>New File</title>
+        <title>Is it New Year?</title>
+        <link rel="stylesheet" href="{% static 'newyear/styles.css' %}">
     </head>
     <body>
-        <h1 style="color:blue;">Hello, world!</h1>
-        <h2 style="color:yellow;">Hello, world!!!</h2>
+        {% if newyear %}
+            <h1>YES</h1>
+        {% else %}
+            <h1>NO</h1>
+        {% endif %}
     </body>
 </html>
