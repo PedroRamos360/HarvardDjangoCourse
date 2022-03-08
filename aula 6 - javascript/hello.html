@@ -6,15 +6,53 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Document</title>
         <script>
-            let counter = 0;
+            if (!localStorage.getItem('counter')) {
+                localStorage.setItem('counter', 0);
+            }
+            if (!localStorage.getItem('seconds')) {
+                localStorage.setItem('seconds', 0);
+            }
+
+            function addSecond() {
+                let seconds = localStorage.getItem('seconds');
+                seconds++;
+                document.querySelector('p').innerHTML = seconds;
+                localStorage.setItem('seconds', seconds);
+                if (seconds >= 10) {
+                    reset();
+                }
+            }
+
             function count() {
+                let counter = localStorage.getItem('counter');
                 counter++;
                 document.querySelector('h1').innerHTML = counter;
+                localStorage.setItem('counter', counter);
             }
+
+            function reset() {
+                let clicks = localStorage.getItem('counter');
+                alert(`Você conseguiu fazer ${clicks} cliques`);
+                localStorage.setItem('counter', 0);
+                localStorage.setItem('seconds', 0);
+                window.location.reload();
+
+            }
+
+            function start() {
+                setInterval(addSecond, 1000);
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelector('#count').onclick = count;         
+                document.querySelector('#start').onclick = start;
+            });
         </script>
     </head>
     <body>
         <h1>0</h1>
-        <button onclick="count()">Count</button>
+        <button id="count">Count</button>
+        <button id="start">Start</button>
+        <p>0</p>
     </body>
 </html>
