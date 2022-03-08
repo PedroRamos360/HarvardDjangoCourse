@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Scroll</title>
+    </head>
+    <script>
+        window.onscroll = () => {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+                document.querySelector('body').style.background = 'red';
+            } else {
+                document.querySelector('body').style.background = 'grey';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            for (let index = 1; index <= 100; index++) {
+            const p = document.createElement('p');
+            p.innerHTML = index;
+            const body = document.querySelector('body');
+            body.appendChild(p);
+        }
+        });
+    </script>
+    <body>
+    </body>
+</html>
