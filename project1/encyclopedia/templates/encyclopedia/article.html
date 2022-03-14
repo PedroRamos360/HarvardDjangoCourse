@@ -1,0 +1,13 @@
+{% extends 'encyclopedia/layout.html' %}
+
+{% load markdown_extras %}
+
+{% block body %}
+    {% if article != None %}
+        {{ article|markdown|safe }}
+        <a href="/edit/{{title}}" class="btn btn-info">Edit this article</a>
+    {% else %}
+        <h1>This article doesn't exists</h1>
+        <p>Please, check if you typed de right article name and try again</p>
+    {% endif %}
+{% endblock %}

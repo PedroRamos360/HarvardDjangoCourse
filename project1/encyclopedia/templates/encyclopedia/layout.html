@@ -1,0 +1,73 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="{% static 'encyclopedia/styles.css' %}" rel="stylesheet">
+        <script>
+            function randomPage() {
+                var entries = '{{ entries|escapejs }}';
+                console.log(entries);
+                entries = entries.replaceAll('[', '');
+                entries = entries.replaceAll(']', '');
+                entries = entries.replaceAll("'", '');
+                var entries_array = entries.split(', ')
+                var index = Math.floor(Math.random() * entries_array.length)
+                window.location.href = `/wiki/${entries_array[index]}`
+            }
+        </script>
+        <style>
+            .link {
+                border: none; 
+                color: #007BFF; 
+                margin: 0; 
+                padding: 0;
+                outline: none !important;
+            }
+            .link:hover {
+                text-decoration: underline;
+                color: #6f42c1;
+            }
+            html, body {
+                position:fixed;
+                top:0;
+                bottom:0;
+                left:0;
+                right:0;
+            }
+            #body {
+                overflow-y: scroll;     
+                height: 100vh;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="row">
+            <div class="sidebar col-lg-2 col-md-3">
+                <h2>Wiki</h2>
+                <form action="/search">
+                    <input class="search" type="text" name="q" placeholder="Search Encyclopedia">
+                </form>
+                <div>
+                    <a class='link' href="{% url 'index' %}">Home</a>
+                </div>
+                <div>
+                    <a class='link' href="{% url 'create_article' %}">Create New Page</a>
+                </div>
+                <div>
+                    <button class='link' onclick="randomPage()">Random Page</button>
+                </div>
+                {% block nav %}
+                {% endblock %}
+            </div>
+            <div class="main col-lg-10 col-md-9" id="body">
+                {% block body %}
+                {% endblock %}
+            </div>
+        </div>
+
+    </body>
+</html>
