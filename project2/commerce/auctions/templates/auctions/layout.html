@@ -76,16 +76,16 @@
             </div>
             <ul class="nav">
                 <li class="nav-item">
-                    <a class="btn btn-light" href="{% url 'index' %}">Active Listings</a>
+                    <a class="btn btn-light btn-work" href="{% url 'index' %}">Active Listings</a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-light" href="{% url 'index' %}">Categories</a>
+                    <a class="btn btn-light" href="{% url 'categories' %}">Categories</a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-light" href="{% url 'index' %}">Watchlist</a>
+                    <a class="btn btn-light" href="{% url 'watchlist' %}">Watchlist</a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-light" href="{% url 'index' %}">Create Listing</a>
+                    <a class="btn btn-light" href="{% url 'create_listing' %}">Create Listing</a>
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">

@@ -1,0 +1,20 @@
+{% extends 'auctions/layout.html' %}
+
+{% block body %}
+    <style>
+        a {
+            font-size: 22px;
+        }
+
+        ul {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+    </style>
+    <h1>Categories</h1>
+    <ul>
+        {% for category in categories %}
+            <li><a href="/?q={{category.name}}">{{ category.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

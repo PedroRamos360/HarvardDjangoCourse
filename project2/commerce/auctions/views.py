@@ -1,4 +1,3 @@
-import re
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
@@ -6,12 +5,20 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from .models import *
+from .forms import *
 
 
 def index(request):
-    return render(request, "auctions/index.html", {
-        'auctions': AuctionList.objects.all()
-    })
+    q = request.GET.get('q')
+    if q:
+        category = Category.objects.get(name=q)
+        return render(request, "auctions/index.html", {
+            'auctions': AuctionList.objects.filter(category=category)
+        })
+    else:
+        return render(request, "auctions/index.html", {
+            'auctions': AuctionList.objects.all()
+        })
 
 
 def login_view(request):
@@ -69,4 +76,32 @@ def register(request):
 def auction(request, name):
     return render(request, 'auctions/auction.html', {
         'name': name
+    })
+
+
+def categories(request):
+    return render(request, 'auctions/categories.html', {
+        'categories': Category.objects.all()
+    })
+
+
+def watchlist(request):
+    return render(request, 'auctions/watchlist.html')
+
+
+def create_listing(request):
+    if request.method == 'POST':
+        form = CreateListing(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            starting_bid =form.cleaned_data['starting_bid']
+            image_url = form.cleaned_data['image_url']
+            category_id = form.cleaned_data['category']
+            category = Category.objects.get(id=category_id)
+            new_list = AuctionList(name=name, price=starting_bid, user=request.user, image_url=image_url, category=category)
+            new_list.save()
+
+    form = CreateListing()
+    return render(request, 'auctions/create_listing.html', {
+        'form': form
     })
