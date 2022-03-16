@@ -1,0 +1,110 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}Auctions{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=League+Spartan&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    </head>
+    {% if not user.is_authenticated %}
+        <style>
+            header {
+                padding: 10px !important;
+            }
+        </style>
+    {% endif %}
+    <style>
+        * {
+            font-family: League Spartan;
+        }
+
+        ul {
+            justify-content: center;
+            width: 100%;
+        }
+
+        li {
+            margin: 0 20px 5px 20px;
+        }
+        header {
+            display: flex;
+            width: 100%;
+            height: 23vh;
+            flex-direction: column;
+            padding: 5px;
+            align-items: center;
+            justify-content: space-between;
+            background-color: rgb(216, 215, 215);
+        }
+
+        html, body {
+            overflow: hidden !important;
+            top:0;
+            bottom:0;
+            left:0;
+            right:0;
+            padding: 0;
+            margin: 0;
+        }
+        #body {
+            padding: 0 20px 20px 20px;
+            width: 100vw;
+        }
+
+        #signedin, #title {
+            color: white;
+            text-shadow: black 2px 2px 4px;
+            margin-bottom: 0;
+        }
+
+        hr {
+            margin-top: 0;
+            border: 1px solid rgb(161, 161, 161);
+        }
+    </style>
+    <body>
+        <header>
+            <h1 id="title">Auctions</h1>
+            <div id="authenticated">
+                {% if user.is_authenticated %}
+                    <p id="signedin">Signed in as <strong>{{ user.username }}</strong>.</p>
+                {% endif %}
+            </div>
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="btn btn-light" href="{% url 'index' %}">Active Listings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-light" href="{% url 'index' %}">Categories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-light" href="{% url 'index' %}">Watchlist</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-light" href="{% url 'index' %}">Create Listing</a>
+                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="btn btn-danger" href="{% url 'logout' %}">Log Out</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="btn btn-success" href="{% url 'login' %}">Log In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-primary" href="{% url 'register' %}">Register</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </header>
+        <hr>
+        <div id="body">
+            {% block body %}
+            {% endblock %}
+        </div>
+    </body>
+</html>

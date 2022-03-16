@@ -1,0 +1,55 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <style>
+        #auction {
+            all: initial;
+            display: flex;
+            border: 2px solid rgb(190, 190, 190);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background-color: rgb(216, 215, 215);
+            cursor: pointer;
+        }
+        img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        #auctions {
+            overflow-y: scroll;
+            height: 64vh;
+        }
+
+        #details {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            justify-content: space-around;
+        }
+
+        #createdat {
+            color: grey;
+        }
+    </style>
+    <h2>Active Listings</h2>
+
+    <main id="auctions">
+        {% for auction in auctions %}
+            <a id="auction" href="/auctions/{{auction.name}}">
+                {% if auction.image_url %}
+                    <img src="{{ auction.image_url }}" alt="{{ auction.image_url }}">
+                {% else %}
+                    <img src="https://cdn.neemo.com.br/uploads/settings_webdelivery/logo/2757/no-image.png" alt="No Image">
+
+                {% endif %}
+                <div id="details">
+                    <h4>{{ auction.name }}</h4>
+                    <strong>Price: {{ auction.price }}</strong>
+                    <p id="createdat">Created at {{ auction.created_at }}</p>
+                </div>
+            </a>
+        {% endfor %}
+    </main>
+{% endblock %}
