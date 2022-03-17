@@ -9,6 +9,12 @@
         main {
             overflow-y: scroll;
             height: 73vh;
+
+        }
+        #listing-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         h2 {
             margin-top: 30px;
@@ -27,41 +33,76 @@
         label {
             margin-top: 20px;
         }
+
+        #listing-details {
+            padding-left: 40%;
+            padding-right: 40%;
+        }
+        #comment-input {
+            width: 98%; 
+            margin-bottom: 10px;
+        }
+
+        #listing-hr {
+            border: 1px solid grey;
+        }
     </style>
-    <main> 
-        <h1>Listing: {{ auction.name }}</h1>
-        {% if auction.image_url %}
-            <img src="{{ auction.image_url }}" alt="{{ auction.image_url }}">
-        {% else %}
-            <img src="https://cdn.neemo.com.br/uploads/settings_webdelivery/logo/2757/no-image.png" alt="No Image">
-        {% endif %}
-        <h2>${{auction.price}}</h2>
-        {% if user.is_authenticated %}
-            <form action="/watchlist" method="POST">
+    <main>
+        <div id="listing-content">
+            <h1>Listing: {{ auction.name }}</h1>
+            {% if auction.image_url %}
+                <img src="{{ auction.image_url }}" alt="{{ auction.image_url }}">
+            {% else %}
+                <img src="https://cdn.neemo.com.br/uploads/settings_webdelivery/logo/2757/no-image.png" alt="No Image">
+            {% endif %}
+            <h2>${{auction.price}}</h2>
+            {% if user.is_authenticated %}
+                <form action="/watchlist" method="POST">
+                    {% csrf_token %}
+                    {% if watchlisted %}
+                        <input hidden type="text" name="add" value="False">
+                        <input name='id' type="text" hidden value="{{auction.id}}">
+                        <input class="btn btn-danger" type="submit" value="Remove from watchlist">
+                    {% else %}
+                        <input hidden type="text" name="add" value="True">
+                        <input name='id' type="text" hidden value="{{auction.id}}">
+                        <input class="btn btn-success" type="submit" value="Add to watchlist">
+                    {% endif %}
+                </form>
+                <label>{{ number_of_bids }} bid(s) made so far.</label>
+                <div id="input-group">
+                    <input placeholder="Bid" class='form-control' type="number" step="0.01" min=0 style="width:200px;">
+                    <button class="btn btn-primary">Place Bid</button>
+                </div>
+            {% else %}
+                <p>To place a bid you need to be logged in.</p>
+            {% endif %}
+            <h3>Details</h3>
+            <ul id="listing-details">
+                <li>Listed by: {{auction.user}}</li>
+                <li>Category: {{auction.category}}</li>
+                <li>Created at: {{auction.created_at}}</li>
+            </ul>
+        </div>
+        <hr id="listing-hr"> 
+        <h3>Comment Section</h3>
+        <div>
+            <form action="/comment" method="POST">
                 {% csrf_token %}
-                {% if watchlisted %}
-                    <input hidden type="text" name="add" value="False">
-                    <input name='id' type="text" hidden value="{{auction.id}}">
-                    <input class="btn btn-danger" type="submit" value="Remove from watchlist">
-                {% else %}
-                    <input hidden type="text" name="add" value="True">
-                    <input name='id' type="text" hidden value="{{auction.id}}">
-                    <input class="btn btn-success" type="submit" value="Add to watchlist">
-                {% endif %}
+                <input name='id' type="text" hidden value="{{auction.id}}">
+                <textarea name='content' id='comment-input' class="form-control" required="true" maxlength="1024"></textarea>
+                <input type="submit" value="Comment" class="btn btn-info">
             </form>
-            <label>0 bid(s) made so far.</label>
-            <div id="input-group">
-                <input placeholder="Bid" class='form-control' type="number" step="0.01" min=0 style="width:200px;">
-                <button class="btn btn-primary">Place Bid</button>
+        </div>
+        <hr id="listing-hr">
+        {% if comments %}
+            <div id="comments">
+                {% for comment in comments %}
+                    <p><strong>{{comment.user}}</strong>: {{comment.content}}</p>
+                {% endfor %}
             </div>
         {% else %}
-            <p>To place a bid you need to be logged in. Log in <a href="/login">here</a></p>
+            <p>No comments yet.</p>
         {% endif %}
-        <h3>Details</h3>
-        <ul>
-            <li>Listed by: {{auction.user}}</li>
-            <li>Category: {{auction.category}}</li>
-            <li>Created at: {{auction.created_at}}</li>
-        </ul>
     </main>
 {% endblock %}

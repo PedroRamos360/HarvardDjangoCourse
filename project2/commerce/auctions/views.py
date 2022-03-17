@@ -75,11 +75,19 @@ def register(request):
 
 def auction(request, id):
     auction = AuctionList.objects.get(id=id)
-    watchlisted = WatchlistItem.objects.filter(user=request.user, auction_list=auction).exists()
+    comments = Comment.objects.filter(auction_list=auction)
+    watchlisted = ''
+    bids = Bid.objects.filter(auction_list=auction)
+    number_of_bids = len(bids)
+    if request.user.is_authenticated:
+        watchlisted = WatchlistItem.objects.filter(user=request.user, auction_list=auction).exists()
     print(watchlisted)
     return render(request, 'auctions/auction.html', {
         'auction': auction,
-        'watchlisted': watchlisted
+        'watchlisted': watchlisted,
+        'comments': comments,
+        'bids': bids,
+        'number_of_bids': number_of_bids
     })
 
 
@@ -120,9 +128,20 @@ def create_listing(request):
             category = Category.objects.get(id=category_id)
             new_list = AuctionList(name=name, price=starting_bid, user=request.user, image_url=image_url, category=category)
             new_list.save()
-            return HttpResponseRedirect(f'/auctions/{name}')
+            return HttpResponseRedirect(f'/auctions/{new_list.id}')
 
     form = CreateListing()
     return render(request, 'auctions/create_listing.html', {
         'form': form
     })
+
+
+def comment(request):
+    if request.method == 'POST':
+        id = request.POST['id']
+        content = request.POST['content']
+        auction_list = AuctionList.objects.get(id=id)
+        new_comment = Comment(user=request.user, auction_list=auction_list, content=content)
+        new_comment.save()
+        return HttpResponseRedirect(f'/auctions/{id}')
+    return HttpResponseRedirect('/')

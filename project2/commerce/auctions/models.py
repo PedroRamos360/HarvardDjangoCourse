@@ -12,20 +12,6 @@ class Category(models.Model):
     def __str__(self):
         return f'{self.name}'
 
-class Bid(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    price = models.FloatField()
-    def __str__(self):
-        return f'{self.user}: {self.price}'
-
-
-class Comment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.CharField(max_length=1024)
-
-    def __str__(self):
-        return f'{self.user}: {self.comment}'
-
 
 class AuctionList(models.Model):
     name = models.CharField(max_length=128)
@@ -37,6 +23,24 @@ class AuctionList(models.Model):
 
     def __str__(self):
         return f'{self.user}: {self.name}'
+
+
+class Bid(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    auction_list = models.ForeignKey(AuctionList, on_delete=models.CASCADE, default=None)
+    price = models.FloatField()
+    
+    def __str__(self):
+        return f'{self.user}: {self.price}'
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    auction_list = models.ForeignKey(AuctionList, on_delete=models.CASCADE, default=None)
+    content = models.CharField(max_length=1024)
+
+    def __str__(self):
+        return f'{self.user}: {self.comment}'
 
 
 class WatchlistItem(models.Model):
