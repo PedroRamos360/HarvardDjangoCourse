@@ -2,4 +2,54 @@
 
 {% block body %}
     <h1>Watchlist</h1>
+
+    <style>
+        #auction {
+            all: initial;
+            display: flex;
+            border: 2px solid rgb(190, 190, 190);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background-color: rgb(216, 215, 215);
+            cursor: pointer;
+        }
+        img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        #auctions {
+            overflow-y: scroll;
+            height: 64vh;
+        }
+
+        #details {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            justify-content: space-around;
+        }
+
+        #createdat {
+            color: grey;
+        }
+    </style>
+
+    <main id="auctions">
+        {% for watchlist_item in watchlist %}
+            <a id="auction" href="/auctions/{{watchlist_item.auction_list.id}}">
+                {% if watchlist_item.auction_list.image_url %}
+                    <img src="{{ watchlist_item.auction_list.image_url }}" alt="{{ watchlist_item.auction_list.image_url }}">
+                {% else %}
+                    <img src="https://cdn.neemo.com.br/uploads/settings_webdelivery/logo/2757/no-image.png" alt="No Image">
+                {% endif %}
+                <div id="details">
+                    <h4>{{ watchlist_item.auction_list.name }}</h4>
+                    <strong>Price: {{ watchlist_item.auction_list.price }}</strong>
+                    <p id="createdat">Created at {{ watchlist_item.auction_list.created_at }}</p>
+                </div>
+            </a>
+        {% endfor %}
+    </main>
 {% endblock %}

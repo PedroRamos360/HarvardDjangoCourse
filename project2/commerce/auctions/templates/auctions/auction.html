@@ -2,10 +2,66 @@
 
 {% block body %}
     <style>
-        #name {
-            text-align: center;
-            color: black;
+        img {
+            height: 64vh;
+        }
+
+        main {
+            overflow-y: scroll;
+            height: 73vh;
+        }
+        h2 {
+            margin-top: 30px;
+        }
+        li {
+            font-size: large;
+            color: rgb(73, 73, 73);
+        }
+        h3 {
+            margin-top: 30px;
+        }
+        #input-group {
+            display: flex;
+        }
+
+        label {
+            margin-top: 20px;
         }
     </style>
-    <h1 id="name">{{ name }}</h1>
+    <main> 
+        <h1>Listing: {{ auction.name }}</h1>
+        {% if auction.image_url %}
+            <img src="{{ auction.image_url }}" alt="{{ auction.image_url }}">
+        {% else %}
+            <img src="https://cdn.neemo.com.br/uploads/settings_webdelivery/logo/2757/no-image.png" alt="No Image">
+        {% endif %}
+        <h2>${{auction.price}}</h2>
+        {% if user.is_authenticated %}
+            <form action="/watchlist" method="POST">
+                {% csrf_token %}
+                {% if watchlisted %}
+                    <input hidden type="text" name="add" value="False">
+                    <input name='id' type="text" hidden value="{{auction.id}}">
+                    <input class="btn btn-danger" type="submit" value="Remove from watchlist">
+                {% else %}
+                    <input hidden type="text" name="add" value="True">
+                    <input name='id' type="text" hidden value="{{auction.id}}">
+                    <input class="btn btn-success" type="submit" value="Add to watchlist">
+                {% endif %}
+            </form>
+            <label>0 bid(s) made so far.</label>
+            <div id="input-group">
+                <input placeholder="Bid" class='form-control' type="number" step="0.01" min=0 style="width:200px;">
+                <button class="btn btn-primary">Place Bid</button>
+            </div>
+        {% else %}
+            <p>To place a bid you need to be logged in. Log in <a href="/login">here</a></p>
+        {% endif %}
+        <h3>Details</h3>
+        <ul>
+            <li>Listed by: {{auction.user}}</li>
+            <li>Category: {{auction.category}}</li>
+            <li>Created at: {{auction.created_at}}</li>
+        </ul>
+    </main>
 {% endblock %}

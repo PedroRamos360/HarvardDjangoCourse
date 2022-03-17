@@ -2,15 +2,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-class AuctionListName(models.Model):
-    name = models.CharField(max_length=128)
-
-    def __str__(self):
-        return f'{self.name}'
-
-
 class User(AbstractUser):
-    watchlist = models.ManyToManyField(AuctionListName, default=None, blank=True)
+    pass
 
 
 class Category(models.Model):
@@ -44,5 +37,10 @@ class AuctionList(models.Model):
 
     def __str__(self):
         return f'{self.user}: {self.name}'
+
+
+class WatchlistItem(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    auction_list = models.ForeignKey(AuctionList, on_delete=models.CASCADE)
 
 

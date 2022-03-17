@@ -73,9 +73,13 @@ def register(request):
         return render(request, "auctions/register.html")
 
 
-def auction(request, name):
+def auction(request, id):
+    auction = AuctionList.objects.get(id=id)
+    watchlisted = WatchlistItem.objects.filter(user=request.user, auction_list=auction).exists()
+    print(watchlisted)
     return render(request, 'auctions/auction.html', {
-        'name': name
+        'auction': auction,
+        'watchlisted': watchlisted
     })
 
 
@@ -86,7 +90,23 @@ def categories(request):
 
 
 def watchlist(request):
-    return render(request, 'auctions/watchlist.html')
+    if request.method == "POST":
+        id = request.POST['id']
+        add = request.POST['add']
+        auction_list = AuctionList.objects.get(id=id)
+        if add == 'True':
+            watchlist_item = WatchlistItem(user=request.user, auction_list=auction_list)
+            watchlist_item.save()
+        else:
+            watchlist_item = WatchlistItem.objects.filter(user=request.user, auction_list=auction_list)
+            watchlist_item.delete()
+        return HttpResponseRedirect('/watchlist')
+    
+    watchlist_items = WatchlistItem.objects.filter(user=request.user)
+
+    return render(request, 'auctions/watchlist.html', {
+        'watchlist': watchlist_items
+    })
 
 
 def create_listing(request):
@@ -94,12 +114,13 @@ def create_listing(request):
         form = CreateListing(request.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
-            starting_bid =form.cleaned_data['starting_bid']
+            starting_bid = form.cleaned_data['starting_bid']
             image_url = form.cleaned_data['image_url']
             category_id = form.cleaned_data['category']
             category = Category.objects.get(id=category_id)
             new_list = AuctionList(name=name, price=starting_bid, user=request.user, image_url=image_url, category=category)
             new_list.save()
+            return HttpResponseRedirect(f'/auctions/{name}')
 
     form = CreateListing()
     return render(request, 'auctions/create_listing.html', {
