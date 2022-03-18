@@ -79,15 +79,22 @@ def auction(request, id):
     watchlisted = ''
     bids = Bid.objects.filter(auction_list=auction)
     number_of_bids = len(bids)
+    bids_from_user = bids.filter(user=request.user)
+    user_bid_to_auction = None
+    try:
+        user_bid_to_auction = bids_from_user[len(bids_from_user) -1]
+    except:
+        pass
     if request.user.is_authenticated:
         watchlisted = WatchlistItem.objects.filter(user=request.user, auction_list=auction).exists()
-    print(watchlisted)
     return render(request, 'auctions/auction.html', {
         'auction': auction,
+        'min_bid': auction.price + 0.01,
         'watchlisted': watchlisted,
         'comments': comments,
         'bids': bids,
-        'number_of_bids': number_of_bids
+        'number_of_bids': number_of_bids,
+        'user_bid_to_auction': user_bid_to_auction
     })
 
 
@@ -143,5 +150,18 @@ def comment(request):
         auction_list = AuctionList.objects.get(id=id)
         new_comment = Comment(user=request.user, auction_list=auction_list, content=content)
         new_comment.save()
+        return HttpResponseRedirect(f'/auctions/{id}')
+    return HttpResponseRedirect('/')
+
+
+def bid(request):
+    if request.method == 'POST':
+        id = request.POST['id']
+        bid = request.POST['bid']
+        auction_list = AuctionList.objects.get(id=id)
+        new_bid = Bid(user=request.user, auction_list=auction_list, price=bid)
+        new_bid.save()
+        auction_list.price = bid
+        auction_list.save()
         return HttpResponseRedirect(f'/auctions/{id}')
     return HttpResponseRedirect('/')
