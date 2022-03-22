@@ -67,25 +67,96 @@
         }
     </style>
     <main>
-        <div id="listing-content">
-            <h1>Listing: {{ auction.name }}</h1>
-            {% if auction.image_url %}
-                <img src="{{ auction.image_url }}" alt="{{ auction.image_url }}">
-            {% else %}
-                <img src="https://cdn.neemo.com.br/uploads/settings_webdelivery/logo/2757/no-image.png" alt="No Image">
-            {% endif %}
-            <h2>${{auction.price}}</h2>
-            {% if user == auction.user %}
-                <p id="user-p">This listing is yours. <strong>{{ number_of_bids}} bid(s)</strong> made so far.</p>
-                {% if number_of_bids == 0 %}
-                    <p id="warn">You can't end this auction because there are no bids made yet.</p>
+        {% if auction.active %}
+            <div id="listing-content">
+                <h1>Listing: {{ auction.name }}</h1>
+                {% if auction.image_url %}
+                    <img src="{{ auction.image_url }}" alt="{{ auction.image_url }}">
                 {% else %}
-                    <form action="">
-                        <input type="text" name="id" hidden value="{{auction.id}}">
-                        <input id="endauction" class="btn btn-warning" type="submit" value="End Auction">
-                    </form>
+                    <img src="https://cdn.neemo.com.br/uploads/settings_webdelivery/logo/2757/no-image.png" alt="No Image">
                 {% endif %}
+                <h2>${{auction.price}}</h2>
+                {% if user == auction.user %}
+                    <p id="user-p">This listing is yours. <strong>{{number_of_bids}} bid(s)</strong> made so far.</p>
+                    {% if number_of_bids == 0 %}
+                        <p id="warn">You can't end this auction because there are no bids made yet.</p>
+                    {% else %}
+                        <form action="/endauction" method="POST">
+                            {% csrf_token %}
+                            <input type="text" name="id" hidden value="{{auction.id}}">
+                            <input type="text" name="bid_user" hidden value="{{now_bid.user}}">
+                            <input id="endauction" class="btn btn-warning" type="submit" value="End Auction">
+                        </form>
+                    {% endif %}
+                {% else %}
+                    {% if user.is_authenticated %}
+                        <form action="/watchlist" method="POST">
+                            {% csrf_token %}
+                            {% if watchlisted %}
+                                <input hidden type="text" name="add" value="False">
+                                <input name='id' type="text" hidden value="{{auction.id}}">
+                                <input class="btn btn-danger" type="submit" value="Remove from watchlist">
+                            {% else %}
+                                <input hidden type="text" name="add" value="True">
+                                <input name='id' type="text" hidden value="{{auction.id}}">
+                                <input class="btn btn-success" type="submit" value="Add to watchlist">
+                            {% endif %}
+                        </form>
+                        {% if user_bid_to_auction.price == auction.price %}
+                            <label id="bids_label">{{ number_of_bids }} bid(s) made so far. <strong>Your bid is the current bid.</strong></label>
+                        {% else %}
+                            <label id="bids_label">{{ number_of_bids }} bid(s) made so far.</label>
+                            <form id="input-group" action="/bid" method="POST">
+                                {% csrf_token %}
+                                <input name='id' type="text" hidden value="{{auction.id}}">
+                                <input name='bid' placeholder="Bid" class='form-control' type="number" step="0.01" 
+                                style="width:200px;" value='{{min_bid}}' min="{{min_bid}}">
+                                <input type="submit" class="btn btn-primary" value="Place Bid">
+                            </form>
+                        {% endif %}
+                    {% else %}
+                        <p>To place a bid you need to be logged in.</p>
+                    {% endif %}
+                {% endif %}
+                <h3 id="details-h3">Details</h3>
+                <ul id="listing-details">
+                    <li>Listed by: {{auction.user}}</li>
+                    <li>Category: {{auction.category}}</li>
+                    <li>Created at: {{auction.created_at}}</li>
+                </ul>
+            </div>
+            <hr id="listing-hr"> 
+            <h3>Comment Section</h3>
+            <div>
+                <form action="/comment" method="POST">
+                    {% csrf_token %}
+                    <input name='id' type="text" hidden value="{{auction.id}}">
+                    <textarea name='content' id='comment-input' class="form-control" required="true" maxlength="1024"></textarea>
+                    <input type="submit" value="Comment" class="btn btn-info">
+                </form>
+            </div>
+            <hr id="listing-hr">
+            {% if comments %}
+                <div id="comments">
+                    {% for comment in comments %}
+                        <p><strong>{{comment.user}}</strong>: {{comment.content}}</p>
+                    {% endfor %}
+                </div>
             {% else %}
+                <p>No comments yet.</p>
+            {% endif %}
+        {% else %}
+            <div id="listing-content">
+                <h1 style="color:red;">Closed: {{ auction.name }}</h1>
+                {% if auction.image_url %}
+                    <img src="{{ auction.image_url }}" alt="{{ auction.image_url }}">
+                {% else %}
+                    <img src="https://cdn.neemo.com.br/uploads/settings_webdelivery/logo/2757/no-image.png" alt="No Image">
+                {% endif %}
+                <h2 style="color:rgb(47, 255, 47)">Winner bid: ${{auction.price}} made by {{user_bid_to_auction.user}}</h2>
+                {% if user == auction.user %}
+                    <p id="user-p">This listing is yours.</p>
+                {% endif %}
                 {% if user.is_authenticated %}
                     <form action="/watchlist" method="POST">
                         {% csrf_token %}
@@ -93,54 +164,16 @@
                             <input hidden type="text" name="add" value="False">
                             <input name='id' type="text" hidden value="{{auction.id}}">
                             <input class="btn btn-danger" type="submit" value="Remove from watchlist">
-                        {% else %}
-                            <input hidden type="text" name="add" value="True">
-                            <input name='id' type="text" hidden value="{{auction.id}}">
-                            <input class="btn btn-success" type="submit" value="Add to watchlist">
                         {% endif %}
                     </form>
-                    {% if user_bid_to_auction.price == auction.price %}
-                        <label id="bids_label">{{ number_of_bids }} bid(s) made so far. <strong>Your bid is the current bid.</strong></label>
-                    {% else %}
-                        <label id="bids_label">{{ number_of_bids }} bid(s) made so far.</label>
-                        <form id="input-group" action="/bid" method="POST">
-                            {% csrf_token %}
-                            <input name='id' type="text" hidden value="{{auction.id}}">
-                            <input name='bid' placeholder="Bid" class='form-control' type="number" step="0.01" 
-                            style="width:200px;" value='{{min_bid}}' min="{{min_bid}}">
-                            <input type="submit" class="btn btn-primary" value="Place Bid">
-                        </form>
-                    {% endif %}
-                {% else %}
-                    <p>To place a bid you need to be logged in.</p>
                 {% endif %}
-            {% endif %}
-            <h3 id="details-h3">Details</h3>
-            <ul id="listing-details">
-                <li>Listed by: {{auction.user}}</li>
-                <li>Category: {{auction.category}}</li>
-                <li>Created at: {{auction.created_at}}</li>
-            </ul>
-        </div>
-        <hr id="listing-hr"> 
-        <h3>Comment Section</h3>
-        <div>
-            <form action="/comment" method="POST">
-                {% csrf_token %}
-                <input name='id' type="text" hidden value="{{auction.id}}">
-                <textarea name='content' id='comment-input' class="form-control" required="true" maxlength="1024"></textarea>
-                <input type="submit" value="Comment" class="btn btn-info">
-            </form>
-        </div>
-        <hr id="listing-hr">
-        {% if comments %}
-            <div id="comments">
-                {% for comment in comments %}
-                    <p><strong>{{comment.user}}</strong>: {{comment.content}}</p>
-                {% endfor %}
+                <h3 id="details-h3">Details</h3>
+                <ul id="listing-details">
+                    <li>Listed by: {{auction.user}}</li>
+                    <li>Category: {{auction.category}}</li>
+                    <li>Created at: {{auction.created_at}}</li>
+                </ul>
             </div>
-        {% else %}
-            <p>No comments yet.</p>
         {% endif %}
     </main>
 {% endblock %}

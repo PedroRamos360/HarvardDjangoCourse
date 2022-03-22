@@ -3,7 +3,7 @@ from django.db import models
 
 
 class User(AbstractUser):
-    pass
+    balance = models.FloatField(default=0)
 
 
 class Category(models.Model):
@@ -20,6 +20,7 @@ class AuctionList(models.Model):
     image_url = models.CharField(max_length=2048, default=None, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=None, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=True)
 
     def __str__(self):
         return f'{self.user}: {self.name}'

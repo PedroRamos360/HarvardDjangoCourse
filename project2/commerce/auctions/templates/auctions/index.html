@@ -37,18 +37,20 @@
 
     <main id="auctions">
         {% for auction in auctions %}
-            <a id="auction" href="/auctions/{{auction.id}}">
-                {% if auction.image_url %}
-                    <img src="{{ auction.image_url }}" alt="{{ auction.image_url }}">
-                {% else %}
-                    <img src="https://cdn.neemo.com.br/uploads/settings_webdelivery/logo/2757/no-image.png" alt="No Image">
-                {% endif %}
-                <div id="details">
-                    <h4>{{ auction.name }}</h4>
-                    <strong>Price: ${{ auction.price }}</strong>
-                    <p id="createdat">Created at {{ auction.created_at }}</p>
-                </div>
-            </a>
+            {% if auction.active %}
+                <a id="auction" href="/auctions/{{auction.id}}">
+                    {% if auction.image_url %}
+                        <img src="{{ auction.image_url }}" alt="{{ auction.image_url }}">
+                    {% else %}
+                        <img src="https://cdn.neemo.com.br/uploads/settings_webdelivery/logo/2757/no-image.png" alt="No Image">
+                    {% endif %}
+                    <div id="details">
+                        <h4>{{ auction.name }}</h4>
+                        <strong>Price: ${{ auction.price }}</strong>
+                        <p id="createdat">Created at {{ auction.created_at }}</p>
+                    </div>
+                </a>
+            {% endif %}
         {% endfor %}
     </main>
 {% endblock %}

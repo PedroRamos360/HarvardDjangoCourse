@@ -34,19 +34,19 @@
         }
     </style>
 
-    <h1>Watchlist</h1>
+    <h1>Your Listings</h1>
     <div id="auctions">
-        {% for watchlist_item in watchlist %}
-            <a id="auction" href="/auctions/{{watchlist_item.auction_list.id}}">
-                {% if watchlist_item.auction_list.image_url %}
-                    <img src="{{ watchlist_item.auction_list.image_url }}" alt="{{ watchlist_item.auction_list.image_url }}">
+        {% for yourlist_item in yourlist_items %}
+            <a id="auction" href="/auctions/{{yourlist_item.id}}">
+                {% if yourlist_item.image_url %}
+                    <img src="{{ yourlist_item.image_url }}" alt="{{ yourlist_item.image_url }}">
                 {% else %}
                     <img src="https://cdn.neemo.com.br/uploads/settings_webdelivery/logo/2757/no-image.png" alt="No Image">
                 {% endif %}
                 <div id="details">
-                    <h4>{{ watchlist_item.auction_list.name }}</h4>
-                    <strong>Price: {{ watchlist_item.auction_list.price }}</strong>
-                    <p id="createdat">Created at {{ watchlist_item.auction_list.created_at }}</p>
+                    <h4>{{ yourlist_item.name }}</h4>
+                    <strong>Price: {{ yourlist_item.price }}</strong>
+                    <p id="createdat">Created at {{ yourlist_item.created_at }}</p>
                 </div>
             </a>
         {% endfor %}

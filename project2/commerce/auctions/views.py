@@ -78,10 +78,14 @@ def auction(request, id):
     comments = Comment.objects.filter(auction_list=auction)
     watchlisted = ''
     bids = Bid.objects.filter(auction_list=auction)
+    now_bid = None
+    for bid in bids:
+        if bid.price == auction.price:
+            now_bid = bid
     number_of_bids = len(bids)
-    bids_from_user = bids.filter(user=request.user)
     user_bid_to_auction = None
     try:
+        bids_from_user = bids.filter(user=request.user)
         user_bid_to_auction = bids_from_user[len(bids_from_user) -1]
     except:
         pass
@@ -93,6 +97,7 @@ def auction(request, id):
         'watchlisted': watchlisted,
         'comments': comments,
         'bids': bids,
+        'now_bid': now_bid,
         'number_of_bids': number_of_bids,
         'user_bid_to_auction': user_bid_to_auction
     })
@@ -115,12 +120,19 @@ def watchlist(request):
         else:
             watchlist_item = WatchlistItem.objects.filter(user=request.user, auction_list=auction_list)
             watchlist_item.delete()
-        return HttpResponseRedirect('/watchlist')
     
     watchlist_items = WatchlistItem.objects.filter(user=request.user)
 
     return render(request, 'auctions/watchlist.html', {
         'watchlist': watchlist_items
+    })
+
+
+def your_listings(request):
+    yourlist_items = AuctionList.objects.filter(user=request.user)
+
+    return render(request, 'auctions/your_listings.html', {
+        'yourlist_items': yourlist_items
     })
 
 
@@ -163,5 +175,22 @@ def bid(request):
         new_bid.save()
         auction_list.price = bid
         auction_list.save()
+        return HttpResponseRedirect(f'/auctions/{id}')
+    return HttpResponseRedirect('/')
+
+
+def endauction(request):
+    if request.method == 'POST':
+        id = request.POST['id']
+        bid_user = request.POST['bid_user']
+        auction_list = AuctionList.objects.get(id=id)
+        auction_list.active = False
+        auction_list.save()
+        user = request.user
+        user.balance = user.balance + auction_list.price
+        user.save()
+        winner_user = User.objects.get(username=bid_user)
+        winner_user.balance = winner_user.balance - auction_list.price
+        winner_user.save()
         return HttpResponseRedirect(f'/auctions/{id}')
     return HttpResponseRedirect('/')
