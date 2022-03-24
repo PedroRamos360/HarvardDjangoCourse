@@ -14,14 +14,11 @@
     <div id="emails-view">
         <div id="title"></div>
         <div id="emails">
-            <!-- {% for email in inbox %}
-                <div class="email">
-                    <strong>{{email.sender}}</strong>
-                    <p class="fit">{{email.subject}}</p>
-                    <p class="fit">{{email.timestamp}}</p>
-                </div>
-            {% endfor %} -->
         </div>
+    </div>
+
+    <div id="email-view" style="display:flex;flex-direction:column;">
+        
     </div>
 
 
@@ -44,5 +41,5 @@
 {% endblock %}
 
 {% block script %}
-    <script src="{% static 'mail/inbox.js' %}"></script>
+    <script src="{% static 'project3/inbox.js' %}"></script>
 {% endblock %}
