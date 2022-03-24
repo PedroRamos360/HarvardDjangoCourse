@@ -25,6 +25,11 @@ html, body {
     margin-bottom: 5px;
 }
 
+.read {
+    background-color: rgb(224, 224, 224);
+    opacity: 70%;
+}
+
 .email:hover {
     border: 2px solid rgb(177, 177, 177);
 }

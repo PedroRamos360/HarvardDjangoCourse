@@ -19,16 +19,35 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 });
 
-function compose_email() {
+function createElement(element, text=null, id=null, className=null, style=null) {
+	var new_text = document.createElement(element);
+	if (text)
+		new_text.appendChild(document.createTextNode(text));
+	if (id)	
+		new_text.id = id;
+	if (className)
+		new_text.className=className;
+	if (style)
+		new_text.style = style;
+	return new_text;
+}
+
+function compose_email(data=null) {
 	// Show compose view and hide other views
 	document.querySelector('#emails-view').style.display = 'none';
 	document.querySelector('#compose-view').style.display = 'block';
 	document.querySelector('#email-view').style.display = 'none';
 
-	// Clear out composition fields
-	document.querySelector('#compose-recipients').value = '';
-	document.querySelector('#compose-subject').value = '';
-	document.querySelector('#compose-body').value = '';
+	if (data && data.id) {
+		document.querySelector('#compose-recipients').value = data.sender;
+		document.querySelector('#compose-subject').value = data.subject;
+		document.querySelector('#compose-body').value = `On ${data.timestamp} ${data.sender} wrote: ${data.body}`;
+	} else {
+		document.querySelector('#compose-recipients').value = '';
+		document.querySelector('#compose-subject').value = '';
+		document.querySelector('#compose-body').value = '';
+	}
+	
 	localStorage.setItem('last_page', 'compose_email');
 }
 
@@ -68,20 +87,13 @@ async function load_mailbox(mailbox) {
 	var emails_div = document.querySelector('#emails');
 	var emails = document.createElement('div');
 	now_mailbox.forEach(email => {
-		var new_email = document.createElement('div');
-		new_email.className = 'email';
-		new_email.id = email.id;
-		var sender = document.createElement('strong');
-		sender.appendChild(document.createTextNode(email.sender));
-		sender.id=email.id;
-		var subject = document.createElement('p');
-		subject.className='fit'
-		subject.id=email.id;
-		subject.appendChild(document.createTextNode(email.subject));
-		var timestamp = document.createElement('p');
-		timestamp.className='fit';
-		timestamp.id=email.id;
-		timestamp.appendChild(document.createTextNode(email.timestamp));
+		if (email.read)
+			var new_email = createElement('div', null, email.id, 'email read');
+		else
+			var new_email = createElement('div', null, email.id, 'email');
+		var sender = createElement('strong', email.sender, email.id, 'fit');
+		var subject = createElement('p', email.subject, email.id, 'fit');
+		var timestamp = createElement('p', email.timestamp, email.id, 'fit');
 		new_email.appendChild(sender);
 		new_email.appendChild(subject);
 		new_email.appendChild(timestamp);
@@ -89,35 +101,81 @@ async function load_mailbox(mailbox) {
 	})
 	emails_div.innerHTML = emails.innerHTML;
 	localStorage.setItem('last_page', mailbox);
-	document.querySelector('.email').addEventListener('click', event => load_email(event));
+	var emails = document.querySelectorAll('.email');
+	emails.forEach(email => {
+		email.addEventListener('click', event => load_email(event));
+	})
 }
 
-function load_email(event) {
+async function change_archive(email_id, boolean) {
+	await fetch(`/emails/${email_id}`, {
+		method: 'PUT',
+		body: JSON.stringify({
+			archived: boolean
+		})
+	});
+	if (boolean)
+		load_mailbox('inbox');
+	else
+		load_mailbox('archive');
+}
+
+async function load_email(event) {
+	var user_logged = JSON.parse(document.getElementById('user_logged').textContent);
+	var data;
+
+	await fetch(`emails/${event.target.id}`)
+	.then(response => response.json())
+	.then(result => {
+		data = result;
+	});
+
+	await fetch(`/emails/${data.id}`, {
+		method: 'PUT',
+		body: JSON.stringify({
+			read: true
+		})
+	});
+
 	// Show the mailbox and hide other views
 	document.querySelector('#emails-view').style.display = 'none';
 	document.querySelector('#compose-view').style.display = 'none';
 	document.querySelector('#email-view').style.display = 'flex';
-
-	console.log(event.target.id);
-	fetch(`emails/${event.target.id}`)
-	.then(response => response.json())
-	.then(result => {
-		console.log(result);
-	})
+	
+	
 
 	var email_div = document.querySelector('#email-view');
 	var content_div = document.createElement('div');
-	var from = document.createElement('strong');
-	from.appendChild(document.createTextNode('From'));
-	var to = document.createElement('strong');
-	to.appendChild(document.createTextNode('To'));
-	var subject = document.createElement('strong');
-	subject.appendChild(document.createTextNode('Subject'));
-	var timestamp = document.createElement('strong');
-	timestamp.appendChild(document.createTextNode('Timestamp'));
-	content_div.appendChild(from);
-	content_div.appendChild(to);
-	content_div.appendChild(subject);
-	content_div.appendChild(timestamp);
+	var i = 0;
+	new_data = [data.sender, data.recipients, data.subject, data.timestamp];
+	['From:', 'To:', 'Subject:', 'Timestamp:'].forEach(text => {
+		var container_div = createElement('div', null, null, 'container_div');
+		var new_strong = createElement('strong', text);
+		var new_p = createElement('p', new_data[i], null, 'fit');
+		new_p.style='margin-left:10px;'
+		container_div.appendChild(new_strong);
+		container_div.appendChild(new_p);
+		content_div.appendChild(container_div);
+		i++;
+	});
+	var buttons_div = createElement('div', null, null, null, 'display:flex;')
+	if (user_logged != data.sender)
+		buttons_div.appendChild(content_div.appendChild(createElement('button', 'Reply', 'reply', 'btn btn-sm btn-outline-primary', 'width:100px;margin-right:10px;')));
+	if (localStorage.getItem('last_page') === 'archive') {
+		buttons_div.appendChild(content_div.appendChild(createElement('button', 'Unarchive', 'unarchive', 'btn btn-sm btn-outline-primary', 'width:100px;')));
+	}
+	else {
+		buttons_div.appendChild(content_div.appendChild(createElement('button', 'Archive', 'archive', 'btn btn-sm btn-outline-primary', 'width:100px;')));
+	}
+
+
+	content_div.appendChild(buttons_div);
+	content_div.appendChild(createElement('hr', null, null, null, 'width:100%;'));
+	content_div.appendChild(createElement('p', data.body));
 	email_div.innerHTML = content_div.innerHTML;
+	document.querySelector('#reply').addEventListener('click', () => {compose_email(data)});
+	if (localStorage.getItem('last_page') === 'archive')
+		document.querySelector('#unarchive').addEventListener('click', () => {change_archive(data.id, false)});
+	else
+		document.querySelector('#archive').addEventListener('click', () => {change_archive(data.id, true)});
 }
