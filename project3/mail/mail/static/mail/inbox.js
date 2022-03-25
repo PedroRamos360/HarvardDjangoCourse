@@ -114,10 +114,7 @@ async function change_archive(email_id, boolean) {
 			archived: boolean
 		})
 	});
-	if (boolean)
-		load_mailbox('inbox');
-	else
-		load_mailbox('archive');
+	load_mailbox('inbox');
 }
 
 async function load_email(event) {
@@ -161,10 +158,11 @@ async function load_email(event) {
 	var buttons_div = createElement('div', null, null, null, 'display:flex;')
 	if (user_logged != data.sender)
 		buttons_div.appendChild(content_div.appendChild(createElement('button', 'Reply', 'reply', 'btn btn-sm btn-outline-primary', 'width:100px;margin-right:10px;')));
-	if (localStorage.getItem('last_page') === 'archive') {
+	if (localStorage.getItem('last_page') === 'sent') {
+		console.log('yaya')
+	} else if (localStorage.getItem('last_page') === 'archive') {
 		buttons_div.appendChild(content_div.appendChild(createElement('button', 'Unarchive', 'unarchive', 'btn btn-sm btn-outline-primary', 'width:100px;')));
-	}
-	else {
+	} else {
 		buttons_div.appendChild(content_div.appendChild(createElement('button', 'Archive', 'archive', 'btn btn-sm btn-outline-primary', 'width:100px;')));
 	}
 
@@ -173,9 +171,14 @@ async function load_email(event) {
 	content_div.appendChild(createElement('hr', null, null, null, 'width:100%;'));
 	content_div.appendChild(createElement('p', data.body));
 	email_div.innerHTML = content_div.innerHTML;
-	document.querySelector('#reply').addEventListener('click', () => {compose_email(data)});
-	if (localStorage.getItem('last_page') === 'archive')
+	console.log(localStorage.getItem('last_page'));
+	if (localStorage.getItem('last_page') === 'sent') {
+		console.log('yaya');
+	} else if (localStorage.getItem('last_page') === 'archive') {
 		document.querySelector('#unarchive').addEventListener('click', () => {change_archive(data.id, false)});
-	else
+		document.querySelector('#reply').addEventListener('click', () => {compose_email(data)});
+	} else {
 		document.querySelector('#archive').addEventListener('click', () => {change_archive(data.id, true)});
+		document.querySelector('#reply').addEventListener('click', () => {compose_email(data)});
+	}
 }
