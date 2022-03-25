@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	document.querySelector('#sent').addEventListener('click', () => load_mailbox('sent'));
 	document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
 	document.querySelector('#compose').addEventListener('click', compose_email);
-	document.querySelector('#compose-form').addEventListener('submit', submit_form);
+	document.querySelector('#compose-form').addEventListener('submit', (event) => {submit_form(event)});
 
 	if (localStorage.getItem('last_page')) {
 		var last_page = localStorage.getItem('last_page');
@@ -51,22 +51,26 @@ function compose_email(data=null) {
 	localStorage.setItem('last_page', 'compose_email');
 }
 
-function submit_form() {
+async function submit_form(event) {
+	event.preventDefault();
 	var recipients = document.querySelector('#compose-recipients').value;
 	var subject = document.querySelector('#compose-subject').value;
 	var content = document.querySelector('#compose-body').value;
-	fetch('/emails', {
+	var data;
+	await fetch('/emails', {
 		method: 'POST',
 		body: JSON.stringify({
 			recipients: recipients,
 			subject: subject,
 			body: content
 		})
-	}).then(response => response.json())
-	.then(result => {
-		console.log(result);
+	}).then(response =>  response.json())
+	.then(result => {data = result});
+	if (data.error) {
+		alert("The recipient(s) typed does not exist!");
+	} else {
 		load_mailbox('sent');
-	});
+	}
 }
 
 async function load_mailbox(mailbox) {
