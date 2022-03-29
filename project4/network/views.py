@@ -8,7 +8,6 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 
 
-
 from .models import *
 
 
@@ -18,11 +17,18 @@ def index(request):
         body = request.POST['body']
         new_post = Post(user=user, body=body)
         new_post.save()
+    
+    try:
+        posts_liked_by_user = []
+        likes_from_user = Like.objects.filter(user=request.user)
+        for like in likes_from_user:
+            posts_liked_by_user.append(like.post)
+    except:
+        posts_liked_by_user = None
 
     return render(request, "network/index.html", {
         'posts': Post.objects.all(),
-        'likes': Like.objects.all(),
-        'likes_by_user': Like.objects.filter(user=request.user)
+        'posts_liked_by_user': posts_liked_by_user
     })
 
 
@@ -86,20 +92,32 @@ def like(request):
         data = request.body.decode('utf-8')
         body = json.loads(data)
         post_id = body['post_id']
+        like = body['like']
+        print(like)
+        print(type(like))
         post = Post.objects.get(id=post_id)
-        new_like = Like(user=user, post=post)
-        new_like.save()
+        if like:
+            new_like = Like(user=user, post=post)
+            new_like.save()
+        else:
+            previous_like = Like.objects.get(user=user, post=post)
+            previous_like.delete()
         return JsonResponse({'message': 'OK'})
 
 @csrf_exempt
 def likes(request, post_id):
     post = Post.objects.get(id=post_id)
-    data = {}
-    likes = Like.objects.filter(post=post)
+    likes = Like.objects.filter(post=post)     
 
-    for like in likes:
-        data[like.id] = {
-            'user': like.user.id,
-            'post': like.post.id
-        }
-    return JsonResponse(len(data), safe=False)
+    return JsonResponse(len(likes), safe=False)
+
+
+def following(request):
+    return render(request, 'network/following.html')
+
+def profile(request, user_id):
+    user_from_page = User.objects.get(id=user_id)
+    return render(request, 'network/profile.html', {
+        'user_from_page': user_from_page,
+        'posts': Post.objects.filter(user=user_from_page)
+    })

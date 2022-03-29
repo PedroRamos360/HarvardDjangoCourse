@@ -3,7 +3,7 @@ from django.db import models
 
 
 class User(AbstractUser):
-    pass
+    followers = models.IntegerField(default=0)
 
 
 class Post(models.Model):
@@ -23,3 +23,8 @@ class Comment(models.Model):
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+
+class Follower(models.Model):
+    follow_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user_followed = models.ForeignKey(User, on_delete=models.CASCADE)

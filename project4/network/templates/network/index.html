@@ -3,53 +3,30 @@
 {% load crispy_forms_tags %}
 
 {% block body %}
-    <style>
-        .post {
-            border: 2px solid rgb(0, 238, 255);
-            border-radius: 8px;
-            padding: 10px;
-            margin-top: 10px;
-            background-color: rgb(108, 214, 250);
-        }
-        .post h4 a, .post p {
-            color: white;
-        }
-
-        #heart {
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        #heart-liked {
-            color: red;
-            font-size: 24px;
-            cursor: pointer;
-        }
-        .heart-counter {
-            display: flex;
-        }
-        .count {
-            margin-left: 10px;
-            font-size: 18px;
-        }
-    </style>
     <script>
-        function changeHeart(event) {
+        async function changeHeart(event) {
             var heart = event.target;
             if (heart.id === 'heart-liked') {
                 heart.id = 'heart';
+                await fetch('like', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        post_id: event.target.parentElement.id,
+                        like: false
+                    })
+                })
             }
             else {
                 heart.id = 'heart-liked';
-                fetch('like', {
+                await fetch('like', {
                     method: 'POST',
                     body: JSON.stringify({
-                        post_id: event.target.parentElement.id
+                        post_id: event.target.parentElement.id,
+                        like: true
                     })
                 })
-                window.location.reload();
             }
+            window.location.reload();
         }
         document.addEventListener('DOMContentLoaded', () => {
             // Change color of the heart and create/destroy like object
@@ -61,23 +38,6 @@
                     count.innerHTML = result;
                 });
             })
-            try {
-                var hearts = document.querySelectorAll('#heart'); 
-                hearts.forEach(heart => {
-                    heart.addEventListener('click', (event) => {
-                        changeHeart(event);
-                    })
-                });
-            } catch {};
-            try {
-                var hearts = document.querySelectorAll('#heart-liked'); 
-                hearts.forEach(heart => {
-                    heart.addEventListener('click', (event) => {
-                        changeHeart(event);
-                    })
-                });
-            } catch {};
-
         })
     </script>
     <h1>All Posts</h1>
@@ -94,10 +54,18 @@
     <div id="posts">
         {% for post in posts %}
             <div class="post">
-                <h4><a href="">{{post.user}}</a></h4>
+                <h4><a href="/profile/{{post.user.id}}">{{post.user}}</a></h4>
                 <p>{{post.body}}</p>
                 <div class="heart-counter" id="{{post.id}}">
-                    <i class="fa fa-heart" id="heart"></i>
+                    {% if user.is_authenticated %}
+                        {% if post in posts_liked_by_user %}
+                            <i onclick="changeHeart(event)" class="fa fa-heart" id="heart-liked"></i>
+                        {% else %}
+                            <i onclick="changeHeart(event)" class="fa fa-heart" id="heart"></i>
+                        {% endif %}
+                    {% else %}
+                        <i class="fa fa-heart" id="heart"></i>
+                    {% endif %}
                     <p class='count' id="{{post.id}}">0</p>
                 </div>
                 <p style="color:rgb(241, 241, 241);">{{post.timestamp}}</p>

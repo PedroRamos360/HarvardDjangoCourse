@@ -1,0 +1,29 @@
+{% extends 'network/layout.html' %}
+
+{% block body %}
+    <h1>{{ user_from_page.username }}</h1>
+    <h5>Followers: {{user_from_page.followers}}</h5>
+    <button class="btn btn-primary">Follow</button>
+    <hr>
+    <div id="posts">
+        {% for post in posts %}
+            <div class="post">
+                <h4><a href="">{{post.user}}</a></h4>
+                <p>{{post.body}}</p>
+                <div class="heart-counter" id="{{post.id}}">
+                    {% if user.is_authenticated %}
+                        {% if post in posts_liked_by_user %}
+                            <i onclick="changeHeart(event)" class="fa fa-heart" id="heart-liked"></i>
+                        {% else %}
+                            <i onclick="changeHeart(event)" class="fa fa-heart" id="heart"></i>
+                        {% endif %}
+                    {% else %}
+                        <i class="fa fa-heart" id="heart"></i>
+                    {% endif %}
+                    <p class='count' id="{{post.id}}">0</p>
+                </div>
+                <p style="color:rgb(241, 241, 241);">{{post.timestamp}}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
