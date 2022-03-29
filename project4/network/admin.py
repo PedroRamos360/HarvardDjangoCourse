@@ -7,6 +7,8 @@ class PostAdmin(admin.ModelAdmin):
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'post', 'timestamp')
 
+admin.site.register(User)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Like)
+admin.site.register(Follower)

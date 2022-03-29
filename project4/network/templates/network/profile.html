@@ -1,9 +1,27 @@
 {% extends 'network/layout.html' %}
 
 {% block body %}
+    <script>
+        async function handleFollow(user_from_page_id, follow) {
+            await fetch(`/profile/${user_from_page_id}`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    follow: follow,
+                })
+            });
+            window.location.reload();
+        }
+    </script>
     <h1>{{ user_from_page.username }}</h1>
-    <h5>Followers: {{user_from_page.followers}}</h5>
-    <button class="btn btn-primary">Follow</button>
+    <div sytle="display:flex" style="margin-bottom:10px;">
+        <h5 class="fit">Followers: {{user_from_page.followers}}</h5>
+        <h5 class="fit" style="margin-left:20px;">Following: {{user_from_page.following}}</h5>
+    </div>
+    {% if user_followed_page_user %}
+        <button class="btn btn-danger" onclick="handleFollow('{{user_from_page.id}}', false)">Unfollow</button>
+    {% else %}
+        <button class="btn btn-primary" onclick="handleFollow('{{user_from_page.id}}', true)">Follow</button>
+    {% endif %}
     <hr>
     <div id="posts">
         {% for post in posts %}
@@ -20,7 +38,7 @@
                     {% else %}
                         <i class="fa fa-heart" id="heart"></i>
                     {% endif %}
-                    <p class='count' id="{{post.id}}">0</p>
+                    <p class='count' id="{{post.id}}">{{post.likes}}</p>
                 </div>
                 <p style="color:rgb(241, 241, 241);">{{post.timestamp}}</p>
             </div>

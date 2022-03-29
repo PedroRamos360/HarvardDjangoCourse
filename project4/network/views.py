@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 import json
+from itertools import chain
 
 
 from .models import *
@@ -93,15 +94,17 @@ def like(request):
         body = json.loads(data)
         post_id = body['post_id']
         like = body['like']
-        print(like)
-        print(type(like))
         post = Post.objects.get(id=post_id)
         if like:
             new_like = Like(user=user, post=post)
             new_like.save()
+            post.likes = post.likes + 1
+            post.save()
         else:
             previous_like = Like.objects.get(user=user, post=post)
             previous_like.delete()
+            post.likes = post.likes - 1
+            post.save()
         return JsonResponse({'message': 'OK'})
 
 @csrf_exempt
@@ -113,11 +116,82 @@ def likes(request, post_id):
 
 
 def following(request):
-    return render(request, 'network/following.html')
+    follower_objects = Follower.objects.filter(user_following=request.user)
+    users_following = []
+    for follower_object in follower_objects:
+        users_following.append(follower_object.user_followed)
 
+    posts = []
+    for user in users_following:
+        posts_from_user = Post.objects.filter(user=user)
+        posts.append(posts_from_user)
+
+    result_list = list(chain(*posts))
+
+    try:
+        posts_liked_by_user = []
+        likes_from_user = Like.objects.filter(user=request.user)
+        for like in likes_from_user:
+            posts_liked_by_user.append(like.post)
+    except:
+        posts_liked_by_user = None
+    
+
+    return render(request, 'network/following.html', {
+        'posts': result_list,
+        'posts_liked_by_user': posts_liked_by_user
+    })
+
+@csrf_exempt
 def profile(request, user_id):
+    if request.method == "POST":
+        data = request.body.decode('utf-8')
+        body = json.loads(data)
+        follow = body['follow']
+        
+        user_following = request.user
+        user_followed = User.objects.get(id=user_id)
+        if follow:
+            new_follower = Follower(user_following=user_following, user_followed=user_followed)
+            new_follower.save()
+            user_followed.followers = user_followed.followers + 1
+            user_followed.save()
+            user_following.following = user_following.following + 1
+            user_following.save()
+        else:
+            previous_follower = Follower.objects.get(user_following=user_following, user_followed=user_followed)
+            previous_follower.delete()
+            user_followed.followers = user_followed.followers - 1
+            user_followed.save()
+            user_following.following = user_following.following - 1
+            user_following.save()
+
+
+    user_followed_page_user = False
+    try:
+        follower_objects_followed_by_user = Follower.objects.filter(user_following=request.user)
+        users_followed_by_user = []
+        for follower in follower_objects_followed_by_user:
+            users_followed_by_user.append(follower.user_followed)
+
+        user_followed = User.objects.get(id=user_id)
+        if user_followed in users_followed_by_user:
+            user_followed_page_user = True 
+    except:
+        pass
+
+    try:
+        posts_liked_by_user = []
+        likes_from_user = Like.objects.filter(user=request.user)
+        for like in likes_from_user:
+            posts_liked_by_user.append(like.post)
+    except:
+        posts_liked_by_user = None
+
     user_from_page = User.objects.get(id=user_id)
     return render(request, 'network/profile.html', {
         'user_from_page': user_from_page,
-        'posts': Post.objects.filter(user=user_from_page)
+        'posts': Post.objects.filter(user=user_from_page),
+        'user_followed_page_user': user_followed_page_user,
+        'posts_liked_by_user': posts_liked_by_user
     })

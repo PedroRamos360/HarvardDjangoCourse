@@ -38,7 +38,38 @@
             margin-left: 10px;
             font-size: 18px;
         }
+        .fit {
+            display: inline;
+            width: fit-content !important;
+            margin-bottom: 0;
+        }
     </style>
+    <script>
+        async function changeHeart(event) {
+            var heart = event.target;
+            if (heart.id === 'heart-liked') {
+                heart.id = 'heart';
+                await fetch('/like', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        post_id: event.target.parentElement.id,
+                        like: false
+                    })
+                })
+            }
+            else {
+                heart.id = 'heart-liked';
+                await fetch('/like', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        post_id: event.target.parentElement.id,
+                        like: true
+                    })
+                })
+            }
+            window.location.reload();
+        }
+    </script>
     <body>
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">

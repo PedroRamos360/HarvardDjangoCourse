@@ -4,6 +4,7 @@ from django.db import models
 
 class User(AbstractUser):
     followers = models.IntegerField(default=0)
+    following = models.IntegerField(default=0)
 
 
 class Post(models.Model):
@@ -26,5 +27,5 @@ class Like(models.Model):
 
 
 class Follower(models.Model):
-    follow_user = models.ForeignKey(User, on_delete=models.CASCADE)
-    user_followed = models.ForeignKey(User, on_delete=models.CASCADE)
+    user_following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_following')
+    user_followed = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_followed')

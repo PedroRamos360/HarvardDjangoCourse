@@ -3,43 +3,6 @@
 {% load crispy_forms_tags %}
 
 {% block body %}
-    <script>
-        async function changeHeart(event) {
-            var heart = event.target;
-            if (heart.id === 'heart-liked') {
-                heart.id = 'heart';
-                await fetch('like', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        post_id: event.target.parentElement.id,
-                        like: false
-                    })
-                })
-            }
-            else {
-                heart.id = 'heart-liked';
-                await fetch('like', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        post_id: event.target.parentElement.id,
-                        like: true
-                    })
-                })
-            }
-            window.location.reload();
-        }
-        document.addEventListener('DOMContentLoaded', () => {
-            // Change color of the heart and create/destroy like object
-            var counts = document.querySelectorAll('.count');
-            counts.forEach(count => {
-                fetch(`likes/${count.id}`)
-                .then(response => response.json())
-                .then(result => {
-                    count.innerHTML = result;
-                });
-            })
-        })
-    </script>
     <h1>All Posts</h1>
     {% if user.is_authenticated %}
         <form action="/" method="POST">
@@ -66,7 +29,7 @@
                     {% else %}
                         <i class="fa fa-heart" id="heart"></i>
                     {% endif %}
-                    <p class='count' id="{{post.id}}">0</p>
+                    <p class='count' id="{{post.id}}">{{post.likes}}</p>
                 </div>
                 <p style="color:rgb(241, 241, 241);">{{post.timestamp}}</p>
             </div>
