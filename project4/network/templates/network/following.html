@@ -1,5 +1,12 @@
 {% extends "network/layout.html" %}
 
+{% load static %}
+
+
+{% block script %}
+    <script src="{% static 'network/index.js' %}"></script>
+{% endblock %}
+
 {% block body %}
     <h1>Following</h1>
     {% for post in posts %}
@@ -16,7 +23,7 @@
                 {% else %}
                     <i class="fa fa-heart" id="heart"></i>
                 {% endif %}
-                <p class='count' id="{{post.id}}">{{post.likes}}</p>
+                <p class='count' id="p{{post.id}}">{{post.likes}}</p>
             </div>
             <p style="color:rgb(241, 241, 241);">{{post.timestamp}}</p>
         </div>

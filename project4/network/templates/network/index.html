@@ -2,6 +2,12 @@
 
 {% load crispy_forms_tags %}
 
+{% load static %}
+
+{% block script %}
+    <script src="{% static 'network/index.js' %}"></script>
+{% endblock %}
+
 {% block body %}
     <h1>All Posts</h1>
     {% if user.is_authenticated %}
@@ -16,9 +22,9 @@
     {% endif %}
     <div id="posts">
         {% for post in posts %}
-            <div class="post">
+            <div class="post" id="{{post.id}}">
                 <h4><a href="/profile/{{post.user.id}}">{{post.user}}</a></h4>
-                <p>{{post.body}}</p>
+                <p id="c{{post.id}}">{{post.body}}</p>
                 <div class="heart-counter" id="{{post.id}}">
                     {% if user.is_authenticated %}
                         {% if post in posts_liked_by_user %}
@@ -29,9 +35,12 @@
                     {% else %}
                         <i class="fa fa-heart" id="heart"></i>
                     {% endif %}
-                    <p class='count' id="{{post.id}}">{{post.likes}}</p>
+                    <p class='count' id="p{{post.id}}">{{post.likes}}</p>
                 </div>
                 <p style="color:rgb(241, 241, 241);">{{post.timestamp}}</p>
+                {% if user == post.user %}
+                    <button onclick='handleEdit(event)' id="edit" class="btn btn-info">Edit</button>
+                {% endif %}
             </div>
         {% endfor %}
     </div>

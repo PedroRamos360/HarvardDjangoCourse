@@ -12,13 +12,24 @@ from itertools import chain
 from .models import *
 
 
+@csrf_exempt
 def index(request):
     if request.method == "POST":
         user = request.user
         body = request.POST['body']
         new_post = Post(user=user, body=body)
         new_post.save()
-    
+
+    if request.method == "PUT":
+        data = request.body.decode('utf-8')
+        body = json.loads(data)
+        post_id = body['post_id']
+        content = body['body']
+        post = Post.objects.get(id=post_id)
+        if post.user == request.user: # Safety verification
+            post.body = content
+            post.save()
+
     try:
         posts_liked_by_user = []
         likes_from_user = Like.objects.filter(user=request.user)
@@ -28,7 +39,7 @@ def index(request):
         posts_liked_by_user = None
 
     return render(request, "network/index.html", {
-        'posts': Post.objects.all(),
+        'posts': Post.objects.all().order_by('timestamp').reverse(),
         'posts_liked_by_user': posts_liked_by_user
     })
 
@@ -123,10 +134,14 @@ def following(request):
 
     posts = []
     for user in users_following:
-        posts_from_user = Post.objects.filter(user=user)
+        posts_from_user = Post.objects.filter(user=user).order_by('timestamp').reverse()
         posts.append(posts_from_user)
 
     result_list = list(chain(*posts))
+    def sort_posts(object):
+        return object.timestamp
+
+    result_list.sort(key=sort_posts, reverse=True)
 
     try:
         posts_liked_by_user = []
@@ -191,7 +206,7 @@ def profile(request, user_id):
     user_from_page = User.objects.get(id=user_id)
     return render(request, 'network/profile.html', {
         'user_from_page': user_from_page,
-        'posts': Post.objects.filter(user=user_from_page),
+        'posts': Post.objects.filter(user=user_from_page).order_by('timestamp').reverse(),
         'user_followed_page_user': user_followed_page_user,
         'posts_liked_by_user': posts_liked_by_user
     })

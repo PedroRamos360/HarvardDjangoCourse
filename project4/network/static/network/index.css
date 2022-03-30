@@ -1,0 +1,45 @@
+.body {
+    padding: 10px 20px 20px 20px;
+}
+
+#newpost {
+    border: 2px solid rgb(221, 221, 221);
+    border-style: double;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.post {
+    border: 2px solid rgb(0, 238, 255);
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: rgb(108, 214, 250);
+}
+.post h4 a, .post p {
+    color: white;
+}
+
+#heart {
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+#heart-liked {
+    color: red;
+    font-size: 24px;
+    cursor: pointer;
+}
+.heart-counter {
+    display: flex;
+}
+.count {
+    margin-left: 10px;
+    font-size: 18px;
+}
+.fit {
+    display: inline;
+    width: fit-content !important;
+    margin-bottom: 0;
+}

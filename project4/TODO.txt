@@ -1,3 +1,3 @@
 PAGINATION
-EDIT POST
-NOT RELOADING ENTIRE PAGE WHEN LIKING
+- Backend (Python code) => django pagination
+- Frontend (HTML) => pagination bootsrap
