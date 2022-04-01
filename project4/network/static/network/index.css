@@ -43,3 +43,14 @@
     width: fit-content !important;
     margin-bottom: 0;
 }
+
+.current {
+    align-self: center;
+    margin: 0 10px 0 10px;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}

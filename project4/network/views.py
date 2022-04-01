@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 import json
 from itertools import chain
+from django.core.paginator import Paginator
 
 
 from .models import *
@@ -37,9 +38,15 @@ def index(request):
             posts_liked_by_user.append(like.post)
     except:
         posts_liked_by_user = None
+    
+    posts = Post.objects.all().order_by('timestamp').reverse()
+    paginator = Paginator(posts, 10)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     return render(request, "network/index.html", {
-        'posts': Post.objects.all().order_by('timestamp').reverse(),
+        'posts': page_obj,
         'posts_liked_by_user': posts_liked_by_user
     })
 
@@ -210,3 +217,6 @@ def profile(request, user_id):
         'user_followed_page_user': user_followed_page_user,
         'posts_liked_by_user': posts_liked_by_user
     })
+
+def test(request):
+    return render(request, 'network/test.html')
