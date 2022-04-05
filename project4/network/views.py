@@ -157,10 +157,15 @@ def following(request):
             posts_liked_by_user.append(like.post)
     except:
         posts_liked_by_user = None
+
+    paginator = Paginator(result_list, 10)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     
 
     return render(request, 'network/following.html', {
-        'posts': result_list,
+        'posts': page_obj,
         'posts_liked_by_user': posts_liked_by_user
     })
 
@@ -209,11 +214,18 @@ def profile(request, user_id):
             posts_liked_by_user.append(like.post)
     except:
         posts_liked_by_user = None
-
+    
     user_from_page = User.objects.get(id=user_id)
+
+    posts = Post.objects.filter(user=user_from_page).order_by('timestamp').reverse()
+    paginator = Paginator(posts, 10)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     return render(request, 'network/profile.html', {
         'user_from_page': user_from_page,
-        'posts': Post.objects.filter(user=user_from_page).order_by('timestamp').reverse(),
+        'posts': page_obj,
         'user_followed_page_user': user_followed_page_user,
         'posts_liked_by_user': posts_liked_by_user
     })
