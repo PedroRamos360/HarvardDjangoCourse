@@ -4,12 +4,35 @@
 
 {% block body %}
     <main id="home">
-        <div>
-            <h1 id="home-title">Some really really super<br>cool text over here</h1>
-            <p>Some explanation text down here idk</p>
-        </div>
-        <div id="imgdiv">
-            <img src="{% static 'virtualcloset/girl.png' %}" alt="" id="girlimg">
-        </div>
+        {% if user.is_authenticated %}
+            <footer>
+                <hr class="headerhr">
+                <ul id="footerul">
+                    <li class="nav-li footerli">
+                        <a href="" class="nav-link">Closet</a>
+                    </li>
+                    <li class="nav-li footerli">
+                        <a href="" class="nav-link">Looks</a>
+                    </li>
+                    <li class="nav-li footerli">
+                        <a href="" class="nav-link">Schedule</a>
+                    </li>
+                    <li class="nav-li footerli">
+                        <a href="" class="nav-link">Trip</a>
+                    </li>
+                </ul>
+            </footer>
+        {% else %} 
+            <div id="hometext">
+                <h1 id="home-title">Your own personal closet stored online!</h1>
+                <p>
+                    Create looks, see the clothes you whore the most, 
+                    organize your clothes into categories<br>and much more!
+                </p>
+            </div>
+            <div id="imgdiv">
+                <img src="{% static 'girl.png' %}" alt="" id="girlimg">
+            </div>
+        {% endif %}
     </main>
 {% endblock %}

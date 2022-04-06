@@ -1,0 +1,151 @@
+* {
+    font-family: Inter;
+}
+
+html {
+    overflow: hidden;
+}
+
+header {
+    justify-content: space-between;
+}
+
+.headerhr {
+    border: 1px solid rgb(170, 170, 170);
+    margin: 0px;
+}
+
+#signup {
+    text-decoration: none;
+}
+
+#signup button, #submit {
+    display: flex;
+    background-color: #C850C0;
+    border-radius: 8px;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    width: 80px;
+    height: 40px;
+    border: none;
+}
+
+#title {
+    font-family: 'Grand Hotel';
+    color: #C850C0;
+    margin: 0;
+    font-size: 40px;
+}
+
+#navbar {
+    position: absolute;
+    right: 50px;
+    align-items: center;
+}
+
+#navbar h5 {
+    padding: 0;
+    margin: 0;
+    color:rgb(170, 170, 170);
+
+}
+
+.nav-li {
+    margin-left: 10px;
+}
+
+#girlimg {
+    width: 470px;
+}
+
+#home {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100vh;
+    width: 100vw;
+    background-color: #4158D0;
+    background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+}
+
+#home h1 {
+    margin-top: 100px;
+    color: white;
+    font-size: 50px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#home p {
+    font-size: 22px;
+    color:rgb(223, 223, 223);
+    width: 600px;
+    text-align: center;
+}
+
+#imgdiv {
+    margin-top: 8px;
+    height: 590px;
+    width: 590px;
+    background-image: linear-gradient(#FFCC70, #ffb325);
+    border-radius: 50%;
+    display: flex;
+    justify-self: center;
+    justify-content: center;
+    align-items: center;
+}
+
+#hometext {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Sign up CSS */
+
+#signupage {
+    height: 100vh;
+    background: linear-gradient(225deg, #923b8c 0%, #C850C0 50%, #ff6af5 100%);
+    padding: 30px;
+}
+
+.signuplabel {
+    color:white;
+}
+
+#submit {
+    background-color: rgb(223, 240, 255);
+    color: rgb(43, 43, 43);
+    transition: 0.2s;
+}
+#submit:hover {
+    background-color: rgb(195, 212, 226);
+}
+
+/* User home page*/
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100vw;
+    height: 80px;
+    background-color: #f8f9fa;
+}
+
+#footerul {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0 200px 0 200px;
+}
+
+.footerli {
+    display: inline;
+    width: fit-content !important;
+    margin-bottom: 0;
+    font-size: 20px;
+}
