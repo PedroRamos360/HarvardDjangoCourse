@@ -1,5 +1,5 @@
 * {
-    font-family: Inter;
+    font-family: 'Josefin Sans';
 }
 
 html {
@@ -29,6 +29,11 @@ header {
     width: 80px;
     height: 40px;
     border: none;
+    transition: 0.2s;
+}
+
+#signup button:hover, #submit:hover {
+    background-color: #ac46a5;
 }
 
 #title {
@@ -74,6 +79,7 @@ header {
     font-size: 50px;
     font-weight: bold;
     text-align: center;
+    font-family: Inter;
 }
 
 #home p {
@@ -81,6 +87,7 @@ header {
     color:rgb(223, 223, 223);
     width: 600px;
     text-align: center;
+    font-family: Inter;
 }
 
 #imgdiv {
@@ -101,25 +108,59 @@ header {
     align-items: center;
 }
 
-/* Sign up CSS */
+/* Sign up and Sign in CSS */
 
 #signupage {
-    height: 100vh;
+    display: flex;
+    height: 90vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     background: linear-gradient(225deg, #923b8c 0%, #C850C0 50%, #ff6af5 100%);
-    padding: 30px;
+}
+
+#signinpage {
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(225deg, #923b8c 0%, #C850C0 50%, #ff6af5 100%);
 }
 
 .signuplabel {
-    color:white;
+    color:black;
+    font-size:large;
 }
 
-#submit {
-    background-color: rgb(223, 240, 255);
-    color: rgb(43, 43, 43);
-    transition: 0.2s;
+#signupform {
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+    width: 500px;
+    padding: 20px;
+    background-color: aliceblue;
+    border-radius: 20px;
+    justify-self: center;
+    justify-content: center;
+    align-items: center;
 }
-#submit:hover {
-    background-color: rgb(195, 212, 226);
+
+#signinform {
+    display: flex;
+    flex-direction: column;
+    height: 300px;
+    width: 500px;
+    padding: 20px;
+    background-color: aliceblue;
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.input {
+    width: 350px;
 }
 
 /* User home page*/

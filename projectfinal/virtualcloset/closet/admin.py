@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import *
+
+admin.site.register(User)
+admin.site.register(ClothingCategory)
+admin.site.register(LookCategory)
+admin.site.register(ClothingItem)
+admin.site.register(Look)
+
