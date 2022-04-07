@@ -13,13 +13,14 @@ header {
 .headerhr {
     border: 1px solid rgb(170, 170, 170);
     margin: 0px;
+    width: 100vw;
 }
 
 #signup {
     text-decoration: none;
 }
 
-#signup button, #submit {
+#signup button, #submit, #clothingbutton, #selectimagebutton {
     display: flex;
     background-color: #C850C0;
     border-radius: 8px;
@@ -133,7 +134,7 @@ header {
     font-size:large;
 }
 
-#signupform {
+.signupform {
     display: flex;
     flex-direction: column;
     height: 500px;
@@ -146,16 +147,8 @@ header {
     align-items: center;
 }
 
-#signinform {
-    display: flex;
-    flex-direction: column;
+.signinform {
     height: 300px;
-    width: 500px;
-    padding: 20px;
-    background-color: aliceblue;
-    border-radius: 20px;
-    justify-content: center;
-    align-items: center;
     margin-bottom: 50px;
 }
 
@@ -189,4 +182,111 @@ footer {
     width: fit-content !important;
     margin-bottom: 0;
     font-size: 20px;
+}
+
+.purple {
+    color: #C850C0;
+}
+
+.purple:hover {
+    color: #973c91;
+}
+
+/* Header from user pages */
+
+#pageheader {
+    /* background: linear-gradient(225deg, #923b8c 0%, #C850C0 50%, #ff6af5 100%); */
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+    align-items: center;
+}
+
+#pagetitle {
+    color: white;
+    margin: 10px 0 10px 0;
+    font-weight: bold;
+}
+
+/* Closet */
+
+html, body {
+    height: 90%;
+}
+
+#pages {
+    background: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#closetpage {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr auto;
+    justify-items: center;
+    align-items: center;
+    height: 68vh;
+}
+
+.addimage, .addimage:hover, .addimage:active, .addimage:focus {
+    border: none;
+    outline: none;
+    background: none;
+}
+
+.addimage:hover {
+    cursor: pointer;
+}
+
+.addicon {
+    font-size: 80px; 
+    color: white;
+    margin-top: 10px;
+}
+
+.addicon:hover {
+    color: rgb(214, 214, 214);
+}
+
+#search, #search:focus {
+    width: 200px;
+    outline: none;
+    background: white;
+    border: 2px solid white;
+    color: rgb(90, 90, 90);
+    border-radius: 8px;
+    margin-bottom: 5px;
+}
+
+#search::placeholder {
+    color: #AAA;
+}
+
+/* Create closet item */
+.clothingform {
+    height: 400px;
+    margin-bottom: 100px;
+}
+
+#clothingbutton {
+    width: 150px;
+}
+
+#selectimagebutton {
+    width: 350px;
+    background-color: #007bff;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#selectimagebutton:hover {
+    background-color: #0068d8;
+}
+
+.previewimage {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
 }

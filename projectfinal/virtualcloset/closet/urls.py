@@ -7,4 +7,9 @@ urlpatterns = [
     path('signin', signin, name='signin'),
     path('signup', signup, name='signup'),
     path('logout', logout_view, name='logout'),
+    path('closet/', closet, name='closet'),
+    path('looks', looks, name='looks'),
+    path('schedule', schedule, name='schedule'),
+    path('trip', trip, name='trip'),
+    path('closet/create', createItem, name='createItem')
 ]

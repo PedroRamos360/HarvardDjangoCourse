@@ -6,8 +6,9 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <link rel="stylesheet" href="{% static 'closet/index.css' %}">
+        <link rel="stylesheet" href="{% static 'vcloset/index.css' %}">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Roboto&display=swap" rel="stylesheet">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,6 +40,36 @@
             </ul>
         </nav>
         <hr class="headerhr">
+        {% if user.is_authenticated %}
+            <div id="pages">
+                {% block Header %}
+                    <header id="pageheader">
+                        <h1 id="pagetitle">{% block pagetitle %}{% endblock %}</h1>
+                        {% block header %}{% endblock %}
+                        <hr class="headerhr">
+                    </header>
+                {% endblock %}
+                {% block page %}
+                {% endblock %}
+            </div>
+            <footer>
+                <hr class="headerhr">
+                <ul id="footerul">
+                    <li class="nav-li footerli">
+                        <a href="/closet" class="nav-link purple">Closet</a>
+                    </li>
+                    <li class="nav-li footerli">
+                        <a href="/looks" class="nav-link purple">Looks</a>
+                    </li>
+                    <li class="nav-li footerli">
+                        <a href="/schedule" class="nav-link purple">Schedule</a>
+                    </li>
+                    <li class="nav-li footerli">
+                        <a href="/trip" class="nav-link purple">Trip</a>
+                    </li>
+                </ul>
+            </footer>
+        {% endif %}
         {% block body %}
         {% endblock %}
     </body>

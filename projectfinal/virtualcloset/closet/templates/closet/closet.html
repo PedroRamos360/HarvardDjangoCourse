@@ -1,0 +1,20 @@
+{% extends 'closet/layout.html' %}
+
+
+{% block pagetitle %}Closet{% endblock %}
+
+<input id='search' type="text" placeholder="Search">
+
+{% block header %}
+{% endblock %}
+
+{% block page %}
+    <main id="closetpage">
+        {% for cloth in clothes %}
+            <img src="{{cloth.image}}">
+        {% endfor %}
+        <a class="addimage" href="/closet/create">
+            <i class="bi bi-plus-square-dotted addicon"></i>
+        </a>
+    </main>
+{% endblock %}

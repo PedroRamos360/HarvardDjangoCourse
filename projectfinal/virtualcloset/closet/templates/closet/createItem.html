@@ -1,0 +1,44 @@
+{% extends 'closet/layout.html' %}
+
+{% load static %}
+
+{% block Header %}{% endblock %}
+
+{% block script %}
+    <script src="{% static 'vcloset/index.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+    <main id="signinpage">
+        {% if message %}
+            <div class="alert alert-light" role="alert" style="color:red;font-size:20px;">
+                <i class="bi bi-exclamation-triangle text-danger" style="font-size: 25px;"></i>
+                {{ message }}
+            </div>
+        {% endif %}
+        <form action="/closet/create" method="POST" class='signupform clothingform'>
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="signuplabel">Name*</label>
+                <input class="form-control input" autofocus type="text" name="name" required>
+            </div>
+            <div class="form-group">
+                <label class="signuplabel">Image*</label>
+                <label for="image" id="selectimagebutton">Select Image</label>
+                <input onchange='handleImageChange(event)' class="form-control-file input" type="file" name="image" id="image" accept="image/png, image/jpg, image/jpeg" required style="display:none;">
+                <img class="previewimage" hidden>
+            </div>
+            <div class="form-group">
+                <label class="signuplabel">Category</label>
+                <select class="form-control input" name="category" disabled>
+                    <option value="">Skirts</option>
+                    <option value="">Pants</option>
+                    <option value="">Shoes</option>
+                    <option value="">Shirts</option>
+                    <option value="">Underwear</option>
+                </select>
+            </div>
+            <button type="submit" id="clothingbutton">Add to closet</button>
+        </form>
+    </main>
+{% endblock %}

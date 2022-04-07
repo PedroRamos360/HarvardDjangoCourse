@@ -1,7 +1,6 @@
 {% extends 'closet/layout.html' %}
 
 {% block body %}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <main id="signinpage">
         {% if message %}
             <div class="alert alert-light" role="alert" style="color:red;font-size:20px;">
@@ -9,7 +8,7 @@
                 {{ message }}
             </div>
         {% endif %}
-        <form action="/signin" method="POST" id='signinform'>
+        <form action="/signin" method="POST" class='signupform signinform'>
             {% csrf_token %}
             <div class="form-group">
                 <label class="signuplabel">Username</label>

@@ -9,6 +9,8 @@ from .models import *
 
 
 def home(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect('/closet')
     return render(request, 'closet/home.html')
 
 
@@ -59,4 +61,38 @@ def signup(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('home'))
+
+
+def closet(request):
+    clothes = ClothingItem.objects.filter(user=request.user)
+    return render(request, 'closet/closet.html', {
+        'clothes': clothes
+    })
+
+
+def looks(request):
+    return render(request, 'closet/looks.html')
+
+
+def schedule(request):
+    return render(request, 'closet/schedule.html')
+
+
+def trip(request):
+    return render(request, 'closet/trip.html')
+
+
+def createItem(request):
+    if request.method == "POST":
+        name = request.POST['name']
+        image = request.POST['image']
+        category = ClothingCategory.objects.all()[0]
+    
+        new_clothing_item = ClothingItem(user=request.user, name=name, image=image, category=category)
+        new_clothing_item.save()
+
+        return HttpResponseRedirect('/closet')
+
+        
+    return render(request, 'closet/createItem.html')
 
