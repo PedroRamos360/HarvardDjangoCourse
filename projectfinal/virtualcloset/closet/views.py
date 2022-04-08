@@ -108,3 +108,14 @@ def createItem(request):
         'categories': ClothingCategory.objects.filter(user=request.user)
     })
 
+
+def createCategory(request):
+    if request.method == "POST":
+        name = request.POST['name']
+    
+        new_category = ClothingCategory(user=request.user, name=name)
+        new_category.save()
+
+        return HttpResponseRedirect('/closet')
+        
+    return render(request, 'closet/createCategory.html')

@@ -30,7 +30,7 @@ class ClothingItem(models.Model):
     category = models.ForeignKey(ClothingCategory, on_delete=models.CASCADE, default=None, blank=True, null=True)
 
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.id}'
 
 
 class Look(models.Model):

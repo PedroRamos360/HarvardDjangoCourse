@@ -12,5 +12,5 @@ urlpatterns = [
     path('schedule', schedule, name='schedule'),
     path('trip', trip, name='trip'),
     path('closet/create/item', createItem, name='createItem'),
-    path('closet/create/category', createItem, name='createItem'),
+    path('closet/create/category', createCategory, name='createCategory'),
 ]

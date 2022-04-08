@@ -4,10 +4,6 @@
 
 {% block Header %}{% endblock %}
 
-{% block script %}
-    <script src="{% static 'closet/index.js' %}"></script>
-{% endblock %}
-
 {% block body %}
     <main id="signinpage">
         {% if message %}
@@ -16,9 +12,8 @@
                 {{ message }}
             </div>
         {% endif %}
-        <form action="/closet/create" method="POST" class='signupform clothingform' enctype="multipart/form-data">
+        <form action="/closet/create/item" method="POST" class='signupform clothingform' enctype="multipart/form-data">
             {% csrf_token %}
-            <input type="text" name="user" hidden value="{{user}}">
             <div class="form-group">
                 <label class="signuplabel">Name*</label>
                 <input class="form-control input" autofocus type="text" name="name" required>
@@ -26,7 +21,7 @@
             <div class="form-group">
                 <label class="signuplabel">Image*</label>
                 <label for="image" id="selectimagebutton">Select Image</label>
-                <input onchange='handleImageChange(event)' class="form-control-file input" type="file" name="image" id="image" accept="image/png, image/jpg, image/jpeg" required style="display:none;">
+                <input onchange='handleImageChange(event)' class="form-control-file input" type="file" name="image" id="image" accept="image/png, image/jpg, image/jpeg, image/webp" required style="display:none;">
                 <img class="previewimage" hidden>
             </div>
             <div class="form-group">

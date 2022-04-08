@@ -1,0 +1,24 @@
+{% extends 'closet/layout.html' %}
+
+{% load static %}
+
+{% block Header %}{% endblock %}
+
+{% block body %}
+    <main id="signinpage">
+        {% if message %}
+            <div class="alert alert-light" role="alert" style="color:red;font-size:20px;">
+                <i class="bi bi-exclamation-triangle text-danger" style="font-size: 25px;"></i>
+                {{ message }}
+            </div>
+        {% endif %}
+        <form action="/closet/create/category" method="POST" class='signupform categoryform' enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="signuplabel">Name*</label>
+                <input class="form-control input" autofocus type="text" name="name" required>
+            </div>
+            <button type="submit" id="clothingbutton">Add category</button>
+        </form>
+    </main>
+{% endblock %}

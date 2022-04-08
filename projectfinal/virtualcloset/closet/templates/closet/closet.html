@@ -9,7 +9,7 @@
 {% block pagetitle %}{% endblock %}
 
 {% block Header %}
-<div style="display:flex;width:100vw;justify-content:center;">
+<div id="closetheader">
     <select class="custom-select" id='headerfilter' onchange="handleChange(event)">
         <option hidden selected disabled value="">Filter by Category</option>
         <option>All</option>
@@ -17,7 +17,7 @@
             <option value="{{category.id}}">{{category.name}}</option>
         {% endfor %}
     </select>
-    <a href='/closet/create/category' class="btn btn-info" style="color:white;">Add Category</a>
+    <a href='/closet/create/category' class="btn btn-info categorybutton" style="color:white;">Add Category</a>
 </div>
 
 {% endblock %}
@@ -27,7 +27,7 @@
 {% block page %}
     <main id="closetpage">
         {% for cloth in clothes %}
-            <div class="closetimg">
+            <div id='{{cloth.image.url}}' class="closetimg" onmouseenter="handleItemMouseOver(event)" onmouseout="handleItemMouseOut(event)">
                 <img src="{{cloth.image.url}}">
             </div>
         {% endfor %}
