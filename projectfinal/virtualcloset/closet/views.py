@@ -1,3 +1,4 @@
+from platform import uname
 from django.db import IntegrityError
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
@@ -64,9 +65,15 @@ def logout_view(request):
 
 
 def closet(request):
-    clothes = ClothingItem.objects.filter(user=request.user)
+    q = request.GET.get('q')
+    try:
+        category = ClothingCategory.objects.get(id=q)
+        clothes = ClothingItem.objects.filter(user=request.user, category=category)
+    except:  
+        clothes = ClothingItem.objects.filter(user=request.user)
     return render(request, 'closet/closet.html', {
-        'clothes': clothes
+        'clothes': clothes,
+        'categories': ClothingCategory.objects.filter(user=request.user)
     })
 
 
@@ -85,14 +92,19 @@ def trip(request):
 def createItem(request):
     if request.method == "POST":
         name = request.POST['name']
-        image = request.POST['image']
-        category = ClothingCategory.objects.all()[0]
+        image = request.FILES['image']
+        try:
+            category_id = request.POST['category_id']
+            category = ClothingCategory.objects.get(id=category_id)
+        except:
+            category = None
     
-        new_clothing_item = ClothingItem(user=request.user, name=name, image=image, category=category)
+        new_clothing_item = ClothingItem(image=image, user=request.user, name=name, category=category)
         new_clothing_item.save()
 
         return HttpResponseRedirect('/closet')
-
         
-    return render(request, 'closet/createItem.html')
+    return render(request, 'closet/createItem.html', {
+        'categories': ClothingCategory.objects.filter(user=request.user)
+    })
 

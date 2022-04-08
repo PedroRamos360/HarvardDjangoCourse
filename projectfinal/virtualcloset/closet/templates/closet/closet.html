@@ -1,19 +1,37 @@
 {% extends 'closet/layout.html' %}
 
+{% load static %}
 
-{% block pagetitle %}Closet{% endblock %}
+{% block script %}
+    <script src="{% static 'closet/closet.js' %}"></script>
+{% endblock %}
+
+{% block pagetitle %}{% endblock %}
+
+{% block Header %}
+<div style="display:flex;width:100vw;justify-content:center;">
+    <select class="custom-select" id='headerfilter' onchange="handleChange(event)">
+        <option hidden selected disabled value="">Filter by Category</option>
+        <option>All</option>
+        {% for category in categories %}
+            <option value="{{category.id}}">{{category.name}}</option>
+        {% endfor %}
+    </select>
+    <a href='/closet/create/category' class="btn btn-info" style="color:white;">Add Category</a>
+</div>
+
+{% endblock %}
 
 <input id='search' type="text" placeholder="Search">
-
-{% block header %}
-{% endblock %}
 
 {% block page %}
     <main id="closetpage">
         {% for cloth in clothes %}
-            <img src="{{cloth.image}}">
+            <div class="closetimg">
+                <img src="{{cloth.image.url}}">
+            </div>
         {% endfor %}
-        <a class="addimage" href="/closet/create">
+        <a class="addimage" href="/closet/create/item">
             <i class="bi bi-plus-square-dotted addicon"></i>
         </a>
     </main>

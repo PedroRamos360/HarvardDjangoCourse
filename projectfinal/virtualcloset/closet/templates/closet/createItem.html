@@ -5,7 +5,7 @@
 {% block Header %}{% endblock %}
 
 {% block script %}
-    <script src="{% static 'vcloset/index.js' %}"></script>
+    <script src="{% static 'closet/index.js' %}"></script>
 {% endblock %}
 
 {% block body %}
@@ -16,8 +16,9 @@
                 {{ message }}
             </div>
         {% endif %}
-        <form action="/closet/create" method="POST" class='signupform clothingform'>
+        <form action="/closet/create" method="POST" class='signupform clothingform' enctype="multipart/form-data">
             {% csrf_token %}
+            <input type="text" name="user" hidden value="{{user}}">
             <div class="form-group">
                 <label class="signuplabel">Name*</label>
                 <input class="form-control input" autofocus type="text" name="name" required>
@@ -30,12 +31,11 @@
             </div>
             <div class="form-group">
                 <label class="signuplabel">Category</label>
-                <select class="form-control input" name="category" disabled>
-                    <option value="">Skirts</option>
-                    <option value="">Pants</option>
-                    <option value="">Shoes</option>
-                    <option value="">Shirts</option>
-                    <option value="">Underwear</option>
+                <select class="form-control input" name="category_id">
+                    <option hidden disabled selected> -- select an option -- </option>
+                    {% for category in categories %}
+                        <option value="{{category.id}}">{{category.name}}</option>
+                    {% endfor %}
                 </select>
             </div>
             <button type="submit" id="clothingbutton">Add to closet</button>

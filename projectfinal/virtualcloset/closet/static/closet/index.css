@@ -227,7 +227,7 @@ html, body {
     grid-template-rows: 1fr 1fr 1fr 1fr auto;
     justify-items: center;
     align-items: center;
-    height: 68vh;
+    height: 80vh;
 }
 
 .addimage, .addimage:hover, .addimage:active, .addimage:focus {
@@ -264,6 +264,32 @@ html, body {
     color: #AAA;
 }
 
+.closetimg {
+    margin-top: 10px;
+    display: flex;
+    background-color: aliceblue;
+    width: 150px;
+    height: 150px;
+    border-radius: 8px;
+}
+
+.closetimg img {
+    display: flex;
+    border-radius: 8px;
+    border: 4px solid aliceblue;
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+}
+
+#headerfilter {
+    display: flex;
+    width: 600px;
+    /* margin-bottom: 20px; */
+    justify-self: center;
+
+}
+
 /* Create closet item */
 .clothingform {
     height: 400px;
@@ -290,3 +316,5 @@ html, body {
     height: 150px;
     object-fit: contain;
 }
+
+

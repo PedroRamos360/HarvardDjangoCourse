@@ -10,24 +10,37 @@ class ClothingCategory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
 
+    def __str__(self):
+        return f'{self.name}'
+        
+
 
 class LookCategory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
+
+    def __str__(self):
+        return f'{self.name}'
 
 
 class ClothingItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
     image = models.ImageField(upload_to='clothes/')
-    category = models.ForeignKey(ClothingCategory, on_delete=models.CASCADE, default=None, blank=True)
+    category = models.ForeignKey(ClothingCategory, on_delete=models.CASCADE, default=None, blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.name}'
 
 
 class Look(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
     image = models.ImageField(upload_to='looks/')
-    category = models.ForeignKey(LookCategory, on_delete=models.CASCADE, default=None, blank=True)
+    category = models.ForeignKey(LookCategory, on_delete=models.CASCADE, default=None, blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.name}'
 
 
 
