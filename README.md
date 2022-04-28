@@ -1,7 +1,7 @@
 # HarvardDjangoCourse
 Personal study repository for harvard's web development online free course with python, django, javascript, html and css.
 
-Link for the videos showing the projects:
+Link for the playlist showing the projects in youtube:
 - https://www.youtube.com/playlist?list=PLNY0gSSs8Rl_lW2Vvst7sqUAeUfkIF8sO
 
 Link for the requirements and features of each project:
