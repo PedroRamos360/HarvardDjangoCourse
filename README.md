@@ -2,14 +2,14 @@
 Personal study repository for harvard's web development online free course with python, django, javascript, html and css.
 
 Link for the videos showing the projects:
-https://www.youtube.com/playlist?list=PLNY0gSSs8Rl_lW2Vvst7sqUAeUfkIF8sO
+- https://www.youtube.com/playlist?list=PLNY0gSSs8Rl_lW2Vvst7sqUAeUfkIF8sO
 
 Link for the requirements and features of each project:
-https://cs50.harvard.edu/web/2020/projects/0/search/
-https://cs50.harvard.edu/web/2020/projects/1/wiki/
-https://cs50.harvard.edu/web/2020/projects/2/commerce/
-https://cs50.harvard.edu/web/2020/projects/3/mail/
-https://cs50.harvard.edu/web/2020/projects/4/network/
+- https://cs50.harvard.edu/web/2020/projects/0/search/
+- https://cs50.harvard.edu/web/2020/projects/1/wiki/
+- https://cs50.harvard.edu/web/2020/projects/2/commerce/
+- https://cs50.harvard.edu/web/2020/projects/3/mail/
+- https://cs50.harvard.edu/web/2020/projects/4/network/
 
 Project0 - Search:
 
