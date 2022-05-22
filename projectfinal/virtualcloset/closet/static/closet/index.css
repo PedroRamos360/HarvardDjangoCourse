@@ -163,7 +163,7 @@ footer {
     position: absolute;
     bottom: 0;
     width: 100vw;
-    height: 80px;
+    height: 60px;
     background-color: #f8f9fa;
 }
 
@@ -228,7 +228,6 @@ html, body {
     grid-template-rows: 1fr 1fr 1fr 1fr auto;
     justify-items: center;
     align-items: center;
-    height: 72vh;
 }
 
 .addimage, .addimage:hover, .addimage:active, .addimage:focus {
@@ -279,7 +278,6 @@ html, body {
     width: 150px;
     height: 150px;
     border-radius: 8px;
-    
 }
 
 
@@ -318,12 +316,15 @@ html, body {
 
 /* Create closet item */
 .clothingform {
-    height: 400px;
-    margin-bottom: 100px;
+    height: fit-content;
+    max-height: 500px;
+    margin-bottom: 60px;
+    padding: 10px;
 }
 
 #clothingbutton {
     width: 150px;
+    height: 40px;
 }
 
 #selectimagebutton {

@@ -5,9 +5,6 @@ function handleImageChange(event) {
         var img = document.querySelector('.previewimage');
         img.src = fileReader.result;
         img.hidden = false;
-        var form = document.querySelector('.clothingform');
-        form.style.height = '500px';
-        form.style.margin = '0 0 80px 0';
     }
     fileReader.readAsDataURL(file);
 }

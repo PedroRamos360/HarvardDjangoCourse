@@ -16,8 +16,6 @@ function handleItemMouseOver(event) {
 function handleItemMouseOut(event) {
     if (event.target.id != "imgbtn") {
         var id = event.target.id;
-        console.log(id);
-        console.log(id.substring(3));
         var imageDiv = document.querySelector(`#img${id.substring(3)}`);
         imageDiv.style.display = "flex";
         event.target.style.display = "none";
@@ -26,10 +24,10 @@ function handleItemMouseOut(event) {
 
 document.addEventListener('DOMContentLoaded', () => {
     var closetpage = document.querySelector('#closetpage');
-    closetpage.style.height = `${window.innerHeight -222}px`;
+    closetpage.style.height = `${window.innerHeight -202}px`;
 });
 
 window.addEventListener('resize', () => {
     var closetpage = document.querySelector('#closetpage');
-    closetpage.style.height = `${window.innerHeight -222}px`;
+    closetpage.style.height = `${window.innerHeight -202}px`;
 });

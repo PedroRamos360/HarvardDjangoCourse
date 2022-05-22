@@ -85,6 +85,7 @@ def createItem(request):
     if request.method == "POST":
         name = request.POST['name']
         image = request.FILES['image']
+        action = f'/closet/edit/item/{id}'
         try:
             category_id = request.POST['category_id']
             category = ClothingCategory.objects.get(id=category_id)
@@ -96,8 +97,43 @@ def createItem(request):
 
         return HttpResponseRedirect('/closet')
         
+        
     return render(request, 'closet/createItem.html', {
-        'categories': ClothingCategory.objects.filter(user=request.user)
+        'categories': ClothingCategory.objects.filter(user=request.user),
+    })
+
+
+def editItem(request, id):
+    if request.method == "POST":
+        name = request.POST['name']
+        try:
+            category_id = request.POST['category_id']
+            category = ClothingCategory.objects.get(id=category_id)
+        except:
+            category = None
+
+
+        edited_clothing_item = ClothingItem.objects.get(id=id)
+        edited_clothing_item.name = name
+        edited_clothing_item.category = category
+
+        try: 
+            image = request.FILES['image']
+            edited_clothing_item.image = image
+        except:
+            pass
+
+        edited_clothing_item.save()
+
+        print("Redirecting to closet...")
+        return HttpResponseRedirect('/closet')
+    
+    clothingItem = ClothingItem.objects.get(id=id)
+
+    return render(request, 'closet/editItem.html', {
+        'categories': ClothingCategory.objects.filter(user=request.user),
+        'clothingItem': clothingItem,
+        'id': id
     })
 
 

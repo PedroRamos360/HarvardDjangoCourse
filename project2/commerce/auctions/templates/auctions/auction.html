@@ -65,6 +65,10 @@
             font-size: large;
             margin-bottom: 0;
         }
+        #description {
+            text-align: justify;
+            padding: 0px 400px 0 400px;
+        }
     </style>
     <main>
         {% if auction.active %}
@@ -124,6 +128,8 @@
                     <li>Category: {{auction.category}}</li>
                     <li>Created at: {{auction.created_at}}</li>
                 </ul>
+                <h3>Description</h3>
+                <p id="description">{{auction.description}}</p>
             </div>
             <hr id="listing-hr"> 
             <h3>Comment Section</h3>
@@ -153,7 +159,7 @@
                 {% else %}
                     <img src="https://cdn.neemo.com.br/uploads/settings_webdelivery/logo/2757/no-image.png" alt="No Image">
                 {% endif %}
-                <h2 style="color:rgb(47, 255, 47)">Winner bid: ${{auction.price}} made by {{user_bid_to_auction.user}}</h2>
+                <h2 style="color:rgb(47, 255, 47)">Winner bid: ${{auction.price}} made by {{now_bid.user}}</h2>
                 {% if user == auction.user %}
                     <p id="user-p">This listing is yours.</p>
                 {% endif %}

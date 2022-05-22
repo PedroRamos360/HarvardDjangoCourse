@@ -32,7 +32,7 @@
             </div>
             <div style="display:none; background:#C850C0;" id="btn{{cloth.id}}" class="closetimg" onmouseleave="handleItemMouseOut(event)">
                 <button class="btn btn-success" id="imgbtn">Add to</button>
-                <button class="btn btn-warning" id="imgbtn">Edit</button>
+                <a href="/closet/edit/item/{{cloth.id}}" class="btn btn-warning" id="imgbtn">Edit</a>
                 <a href="/closet/delete/{{cloth.id}}" class="btn btn-danger" id="imgbtn">Delete</a>
             </div>
         {% endfor %}

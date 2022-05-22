@@ -3,11 +3,16 @@
 {% load crispy_forms_tags %}
 
 {% block body %}
+    <style>
+        #create-listing {
+            overflow-y: scroll;
+            height: 64vh;
+        }
+    </style>
     <h1>Create Listing</h1>
-    <form method='post' action="/create_listing">
+    <form id="create-listing" method='post' action="/create_listing">
         {% csrf_token %}
         {{ form|crispy }}
         <input type="submit" class="btn btn-success" value="Create">
     </form>
-
 {% endblock %}

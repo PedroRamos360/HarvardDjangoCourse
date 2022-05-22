@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -109,6 +110,7 @@ def categories(request):
     })
 
 
+@login_required
 def watchlist(request):
     if request.method == "POST":
         id = request.POST['id']
@@ -127,7 +129,7 @@ def watchlist(request):
         'watchlist': watchlist_items
     })
 
-
+@login_required
 def your_listings(request):
     yourlist_items = AuctionList.objects.filter(user=request.user)
 
@@ -136,16 +138,18 @@ def your_listings(request):
     })
 
 
+@login_required
 def create_listing(request):
     if request.method == 'POST':
         form = CreateListing(request.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
             starting_bid = form.cleaned_data['starting_bid']
+            description = form.cleaned_data['description']
             image_url = form.cleaned_data['image_url']
             category_id = form.cleaned_data['category']
             category = Category.objects.get(id=category_id)
-            new_list = AuctionList(name=name, price=starting_bid, user=request.user, image_url=image_url, category=category)
+            new_list = AuctionList(name=name, price=starting_bid, user=request.user, image_url=image_url, description=description, category=category)
             new_list.save()
             return HttpResponseRedirect(f'/auctions/{new_list.id}')
 
@@ -155,6 +159,7 @@ def create_listing(request):
     })
 
 
+@login_required
 def comment(request):
     if request.method == 'POST':
         id = request.POST['id']
@@ -166,6 +171,7 @@ def comment(request):
     return HttpResponseRedirect('/')
 
 
+@login_required
 def bid(request):
     if request.method == 'POST':
         id = request.POST['id']
@@ -179,6 +185,7 @@ def bid(request):
     return HttpResponseRedirect('/')
 
 
+@login_required
 def endauction(request):
     if request.method == 'POST':
         id = request.POST['id']

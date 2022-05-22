@@ -16,6 +16,7 @@ class Category(models.Model):
 class AuctionList(models.Model):
     name = models.CharField(max_length=128)
     price = models.FloatField()
+    description = models.CharField(max_length=1024, default='No description for this product')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image_url = models.CharField(max_length=2048, default=None, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=None, blank=True)
@@ -41,7 +42,7 @@ class Comment(models.Model):
     content = models.CharField(max_length=1024)
 
     def __str__(self):
-        return f'{self.user}: {self.comment}'
+        return f'{self.user}: {self.content}'
 
 
 class WatchlistItem(models.Model):

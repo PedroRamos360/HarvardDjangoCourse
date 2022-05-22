@@ -1,0 +1,49 @@
+{% extends 'closet/layout.html' %}
+
+{% load static %}
+
+{% block Header %}{% endblock %}
+
+{% block body %}
+    <main id="signinpage">
+        {% if message %}
+            <div class="alert alert-light" role="alert" style="color:red;font-size:20px;">
+                <i class="bi bi-exclamation-triangle text-danger" style="font-size: 25px;"></i>
+                {{ message }}
+            </div>
+        {% endif %}
+        <form action="/closet/edit/item/{{id}}" method="POST" class='signupform clothingform' enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="signuplabel">Name*</label>
+                <input class="form-control input" autofocus type="text" name="name" requiredv 
+                value="{{clothingItem.name}}">
+            </div>
+            <div class="form-group">
+                <label class="signuplabel">Image</label>
+                <label for="image" id="selectimagebutton">Select Image</label>
+                <input onchange='handleImageChange(event)' class="form-control-file input" type="file" name="image" 
+                id="image" accept="image/png, image/jpg, image/jpeg, image/webp" style="display:none;"
+                value="{{clothingItem.image}}">
+                <img class="previewimage" src="{{clothingItem.image.url}}">
+            </div>
+            <div class="form-group">
+                <label class="signuplabel">Category</label>
+                <select class="form-control input" name="category_id" value="{{clothingItem.category}}">
+                    {% if not clothingItem.category %}
+                        <option hidden disabled selected> -- select an option -- </option>
+                    {% endif %}
+                    {% for category in categories %}
+                        {% if category == clothingItem.category %}
+                            <option value="{{category.id}}" selected>{{category.name}}</option>
+                        {% else %}
+                            <option value="{{category.id}}">{{category.name}}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" id="clothingbutton">Save</button>
+
+        </form>
+    </main>
+{% endblock %}
