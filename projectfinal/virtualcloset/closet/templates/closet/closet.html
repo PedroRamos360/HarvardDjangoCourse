@@ -27,8 +27,13 @@
 {% block page %}
     <main id="closetpage">
         {% for cloth in clothes %}
-            <div id='{{cloth.image.url}}' class="closetimg" onmouseenter="handleItemMouseOver(event)" onmouseout="handleItemMouseOut(event)">
+            <div id='img{{cloth.id}}' class="closetimg" onmouseenter="handleItemMouseOver(event)">
                 <img src="{{cloth.image.url}}">
+            </div>
+            <div style="display:none; background:#C850C0;" id="btn{{cloth.id}}" class="closetimg" onmouseleave="handleItemMouseOut(event)">
+                <button class="btn btn-success" id="imgbtn">Add to</button>
+                <button class="btn btn-warning" id="imgbtn">Edit</button>
+                <a href="/closet/delete/{{cloth.id}}" class="btn btn-danger" id="imgbtn">Delete</a>
             </div>
         {% endfor %}
         <a class="addimage" href="/closet/create/item">

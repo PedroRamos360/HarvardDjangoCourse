@@ -81,14 +81,6 @@ def looks(request):
     return render(request, 'closet/looks.html')
 
 
-def schedule(request):
-    return render(request, 'closet/schedule.html')
-
-
-def trip(request):
-    return render(request, 'closet/trip.html')
-
-
 def createItem(request):
     if request.method == "POST":
         name = request.POST['name']
@@ -119,3 +111,11 @@ def createCategory(request):
         return HttpResponseRedirect('/closet')
         
     return render(request, 'closet/createCategory.html')
+
+
+def deleteClothingItem(request, id):
+    clothtingItem = ClothingItem.objects.get(id=id)
+    if (clothtingItem.user == request.user):
+        clothtingItem.delete()
+
+    return HttpResponseRedirect(reverse('home'))

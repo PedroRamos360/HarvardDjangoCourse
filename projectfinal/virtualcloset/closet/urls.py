@@ -9,8 +9,7 @@ urlpatterns = [
     path('logout', logout_view, name='logout'),
     path('closet/', closet, name='closet'),
     path('looks', looks, name='looks'),
-    path('schedule', schedule, name='schedule'),
-    path('trip', trip, name='trip'),
     path('closet/create/item', createItem, name='createItem'),
     path('closet/create/category', createCategory, name='createCategory'),
+    path('closet/delete/<int:id>', deleteClothingItem, name='deleteClothingItem')
 ]
