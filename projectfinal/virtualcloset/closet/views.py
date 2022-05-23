@@ -155,3 +155,9 @@ def deleteClothingItem(request, id):
         clothtingItem.delete()
 
     return HttpResponseRedirect(reverse('home'))
+
+
+def createLook(request):
+    return render(request, 'closet/createLook.html', {
+        'clothes': ClothingItem.objects.filter(user=request.user)
+    })

@@ -1,6 +1,18 @@
 {% extends 'closet/layout.html' %}
 
-{% block pagetitle %}Looks{% endblock %}
+{% block pagetitle %}Your Looks{% endblock %}
 
-{% block body %}
+{% load static %}
+
+{% block script %}
+    <script src="{% static 'closet/looks.js' %}"></script>
+{% endblock %}
+
+{% block page %}
+    <main id="lookspage">
+
+        <a class="addimage" href="/looks/create">
+            <i class="bi bi-plus-square-dotted addicon"></i>
+        </a>
+    </main>
 {% endblock %}

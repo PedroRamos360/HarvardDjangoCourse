@@ -1,0 +1,33 @@
+{% extends 'closet/layout.html' %}
+
+{% load static %}
+
+{% block Header %}{% endblock %}
+
+{% block script %}
+    <script src="{% static 'closet/index.js %}"></script>
+{% endblock %}
+
+{% block body %}
+    <main id="signinpage">
+        {% if message %}
+            <div class="alert alert-light" role="alert" style="color:red;font-size:20px;">
+                <i class="bi bi-exclamation-triangle text-danger" style="font-size: 25px;"></i>
+                {{ message }}
+            </div>
+        {% endif %}
+        <form action="/closet/create/item" method="POST" class='signupform clothingform' enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <select class="form-control input" name="clothingItem_id" onchange="handleClothingChange(event)">
+                    <option hidden disabled selected> -- select an option -- </option>
+                    {% for cloth in clothes %}
+                        <option value="{{cloth.id}}">{{cloth.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <img src="" alt="" class=".previewImage">
+            <button type="submit" id="clothingbutton">Create Look</button>
+        </form>
+    </main>
+{% endblock %}

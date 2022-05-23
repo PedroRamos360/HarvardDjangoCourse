@@ -213,7 +213,7 @@ footer {
 /* Closet */
 
 html, body {
-    height: 90%;
+    height: 100%;
 }
 
 #pages {
@@ -228,6 +228,14 @@ html, body {
     grid-template-rows: 1fr 1fr 1fr 1fr auto;
     justify-items: center;
     align-items: center;
+}
+
+#lookspage {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr auto;
+    justify-content: center;
+    justify-items: center;
 }
 
 .addimage, .addimage:hover, .addimage:active, .addimage:focus {

@@ -8,3 +8,8 @@ function handleImageChange(event) {
     }
     fileReader.readAsDataURL(file);
 }
+
+function handleClothingChange(event) {
+    var img = document.querySelector('.previewimage');
+    img.hidden = false;
+}

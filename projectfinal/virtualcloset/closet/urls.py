@@ -12,5 +12,6 @@ urlpatterns = [
     path('closet/create/item', createItem, name='createItem'),
     path('closet/edit/item/<int:id>', editItem, name='editItem'),
     path('closet/create/category', createCategory, name='createCategory'),
-    path('closet/delete/<int:id>', deleteClothingItem, name='deleteClothingItem')
+    path('closet/delete/<int:id>', deleteClothingItem, name='deleteClothingItem'),
+    path('looks/create', createLook, name='createLook')
 ]
