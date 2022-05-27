@@ -9,10 +9,12 @@ window.addEventListener('resize', () => {
 });
 
 function addSelect() {
-    var firstselect = document.querySelector('.selectlook');
+    var firstselect = document.querySelector('.select');
     var newSelect = firstselect.cloneNode(true);
-    const divSelects = document.querySelector('.lookformgroup');
+    const divSelects = document.querySelector('.selects');
     divSelects.appendChild(newSelect);
+}
 
-
+function removeSelect(event) {
+    event.target.parentNode.parentNode.remove();
 }

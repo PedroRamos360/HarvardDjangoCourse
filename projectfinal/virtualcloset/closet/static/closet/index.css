@@ -370,6 +370,10 @@ html, body {
 
 .lookformgroup {
     overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .selectlook {
@@ -398,4 +402,39 @@ html, body {
 
 .lookadd:hover {
     color: #ac46a5;
+}
+
+.select {
+    display: flex;
+}
+
+.selects {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.trashbtn, .trashbtn:active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    height: 38px;
+    padding: 0;
+    margin: 0;
+    outline: none;
+}
+
+.trashicon {
+    color: red;
+    font-size: 38px;
+    height: 38px;
+    display: flex;
+    align-self: center;
+    justify-self: center;
+}
+
+.trashicon:hover {
+    color: rgb(209, 0, 0);
 }

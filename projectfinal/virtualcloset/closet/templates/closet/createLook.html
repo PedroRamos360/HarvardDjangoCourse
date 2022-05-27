@@ -20,12 +20,19 @@
         <form action="/looks/create" method="POST" class='signupform clothingform createLookForm' enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group lookformgroup">
-                <select class="form-control input selectlook" name="clothingItem_id" onchange="handleClothingChange(event)">
-                    <option hidden disabled selected> -- select an option -- </option>
-                    {% for cloth in clothes %}
-                        <option value="{{cloth.id}}">{{cloth.name}}</option>
-                    {% endfor %}
-                </select>
+                <div class="selects">
+                    <div class="select">
+                        <select class="form-control input selectlook" name="clothingItem_id" onchange="handleClothingChange(event)">
+                            <option hidden disabled selected> -- select an option -- </option>
+                            {% for cloth in clothes %}
+                                <option value="{{cloth.id}}">{{cloth.name}}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="button" class="trashbtn" onclick="removeSelect(event)">
+                            <i class="bi bi-x-square-fill trashicon"></i>
+                        </button>
+                    </div>
+                </div>
                 <button type="button" class="addimage lookadd" onclick="addSelect()">
                     <i class="bi bi-plus-square-dotted lookadd"></i>
                 </button>
