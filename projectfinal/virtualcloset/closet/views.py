@@ -159,5 +159,5 @@ def deleteClothingItem(request, id):
 
 def createLook(request):
     return render(request, 'closet/createLook.html', {
-        'clothes': ClothingItem.objects.filter(user=request.user)
+        'clothes': ClothingItem.objects.filter(user=request.user),
     })

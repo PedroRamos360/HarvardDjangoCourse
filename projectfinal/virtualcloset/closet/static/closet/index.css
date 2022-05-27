@@ -359,4 +359,43 @@ html, body {
     margin-bottom: 100px;
 }
 
+/* Create Look Form */
 
+.createLookForm {
+    border-radius: 8px;
+    height: 100vh;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.lookformgroup {
+    overflow-y: scroll;
+}
+
+.selectlook {
+    margin-bottom: 10px;
+}
+
+.lookbtn {
+    background-color: #C850C0;
+    border-radius: 8px;
+    color: white;
+    width: 160px;
+    height: 40px;
+    border: none;
+    transition: 0.2s;
+}
+
+.lookbtn:hover {
+    background-color: #ac46a5;
+}
+
+.lookadd {
+    font-size: 60px; 
+    color: #C850C0;
+    margin-top: 10px;
+}
+
+.lookadd:hover {
+    color: #ac46a5;
+}

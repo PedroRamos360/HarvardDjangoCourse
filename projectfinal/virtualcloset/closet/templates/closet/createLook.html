@@ -5,7 +5,8 @@
 {% block Header %}{% endblock %}
 
 {% block script %}
-    <script src="{% static 'closet/index.js %}"></script>
+    <script src="{% static 'closet/index.js' %}"></script>
+    <script src="{% static 'closet/looks.js' %}"></script>
 {% endblock %}
 
 {% block body %}
@@ -16,18 +17,20 @@
                 {{ message }}
             </div>
         {% endif %}
-        <form action="/closet/create/item" method="POST" class='signupform clothingform' enctype="multipart/form-data">
+        <form action="/looks/create" method="POST" class='signupform clothingform createLookForm' enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="form-group">
-                <select class="form-control input" name="clothingItem_id" onchange="handleClothingChange(event)">
+            <div class="form-group lookformgroup">
+                <select class="form-control input selectlook" name="clothingItem_id" onchange="handleClothingChange(event)">
                     <option hidden disabled selected> -- select an option -- </option>
                     {% for cloth in clothes %}
                         <option value="{{cloth.id}}">{{cloth.name}}</option>
                     {% endfor %}
                 </select>
+                <button type="button" class="addimage lookadd" onclick="addSelect()">
+                    <i class="bi bi-plus-square-dotted lookadd"></i>
+                </button>
             </div>
-            <img src="" alt="" class=".previewImage">
-            <button type="submit" id="clothingbutton">Create Look</button>
+            <button type="submit" class="lookbtn">Create Look</button>
         </form>
     </main>
 {% endblock %}
