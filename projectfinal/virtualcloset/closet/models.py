@@ -36,8 +36,7 @@ class ClothingItem(models.Model):
 class Look(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
-    image = models.ImageField(upload_to='looks/')
-    category = models.ForeignKey(LookCategory, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    clothes = models.ManyToManyField(ClothingItem)
 
     def __str__(self):
         return f'{self.name}'

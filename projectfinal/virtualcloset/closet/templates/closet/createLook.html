@@ -19,10 +19,14 @@
         {% endif %}
         <form action="/looks/create" method="POST" class='signupform clothingform createLookForm' enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="form-group lookformgroup">
+            <div class="form-group">
+                <label class="signuplabel">Look name</label>
+                <input class="form-control input" autofocus type="text" name="name" required>
+            </div>
+            <div class="form-group lookformgroup" style="overflow: hidden">
                 <div class="selects">
                     <div class="select">
-                        <select class="form-control input selectlook" name="clothingItem_id" onchange="handleClothingChange(event)">
+                        <select class="form-control input selectlook" name="clothingItem_id0" onchange="handleClothingChange(event)">
                             <option hidden disabled selected> -- select an option -- </option>
                             {% for cloth in clothes %}
                                 <option value="{{cloth.id}}">{{cloth.name}}</option>

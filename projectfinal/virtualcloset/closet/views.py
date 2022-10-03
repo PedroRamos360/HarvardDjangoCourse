@@ -158,6 +158,25 @@ def deleteClothingItem(request, id):
 
 
 def createLook(request):
+    if request.method == "POST":
+        name = request.POST["name"]
+        user = request.user
+        newLook = Look(user=user, name=name)
+        newLook.save()
+
+        i = 0
+        while True:
+            try:
+                clothIndex = request.POST[("clothingItem_id" + str(i))]
+                newLook.clothes.add(clothIndex)
+                newLook.save()
+            except:
+                break
+            i += 1
+    
+
+        
+
     return render(request, 'closet/createLook.html', {
         'clothes': ClothingItem.objects.filter(user=request.user),
     })

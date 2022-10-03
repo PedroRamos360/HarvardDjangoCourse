@@ -11,10 +11,20 @@ window.addEventListener('resize', () => {
 function addSelect() {
     var firstselect = document.querySelector('.select');
     var newSelect = firstselect.cloneNode(true);
+
+    var countSelects = document.querySelectorAll('.select').length;
+    var name = "clothingItem_id" + countSelects;
+    var childSelect = newSelect.childNodes[1];
+
+    childSelect.setAttribute('name', name);
+    
     const divSelects = document.querySelector('.selects');
     divSelects.appendChild(newSelect);
 }
 
 function removeSelect(event) {
-    event.target.parentNode.parentNode.remove();
+    var countSelects = document.querySelectorAll('.select').length;
+    
+    if (countSelects != 1)
+        event.target.parentNode.parentNode.remove();
 }

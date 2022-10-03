@@ -363,7 +363,8 @@ html, body {
 
 .createLookForm {
     border-radius: 8px;
-    height: 100vh;
+    display: flex;
+    height: 480px;
     justify-content: space-between;
     padding: 10px;
 }
@@ -411,6 +412,8 @@ html, body {
 .selects {
     display: flex;
     flex-direction: column;
+    overflow-y: scroll;
+    height: 250px;
 }
 
 
