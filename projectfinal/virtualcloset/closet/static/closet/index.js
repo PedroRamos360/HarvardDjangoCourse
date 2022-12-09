@@ -8,8 +8,18 @@ function handleImageChange(event) {
     }
     fileReader.readAsDataURL(file);
 }
+function handleImageChangeLook() {
+    var strong = document.querySelector('.imagechoosen');
+    var p = document.querySelector('.imagechoosenp');
+    p.hidden = false;
+    strong.hidden = false;
+    var number = strong.innerHTML;
+    number = parseInt(number);
+    number += 1;
+    strong.innerHTML = number;
+}
 
-function handleClothingChange(event) {
+function handleClothingChange() {
     var img = document.querySelector('.previewimage');
     img.hidden = false;
 }

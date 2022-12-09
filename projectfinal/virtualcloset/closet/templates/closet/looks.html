@@ -6,10 +6,26 @@
 
 {% block script %}
     <script src="{% static 'closet/looks.js' %}"></script>
+    <script src="{% static 'closet/closet.js' %}"></script>
 {% endblock %}
 
 {% block page %}
     <main id="lookspage">
+        {% for look in looks %}
+            <div class="look">
+                <div class="lookname">
+                    <h3 style="margin:0;">{{look.name}}</h3>
+                </div>
+                <div id='img{{look.id}}' class="closetimg" style="margin:0;" onmouseenter="handleItemMouseOver(event)">
+                    <img src="{{look.image.url}}" alt="look image">
+                </div>
+                <div id="btn{{look.id}}" class="closetimg" style="display:none; background:#C850C0; margin:0; border-radius: 0 0 10px 10px;" onmouseleave="handleItemMouseOut(event)">
+                    <a class="btn btn-primary" href="/looks/{{look.id}}">View</a>
+                    <a class="btn btn-primary" href="/looks/{{look.id}}/edit">Edit</a>
+                    <a class="btn btn-danger" href="/looks/{{look.id}}/delete">Delete</a>
+                </div>
+            </div>
+        {% endfor %}
 
         <a class="addimage" href="/looks/create">
             <i class="bi bi-plus-square-dotted addicon"></i>

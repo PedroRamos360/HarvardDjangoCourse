@@ -78,7 +78,11 @@ def closet(request):
 
 
 def looks(request):
-    return render(request, 'closet/looks.html')
+    looks = Look.objects.filter(user=request.user)
+
+    return render(request, 'closet/looks.html', {
+        'looks': looks
+    })
 
 
 def createItem(request):
@@ -160,8 +164,9 @@ def deleteClothingItem(request, id):
 def createLook(request):
     if request.method == "POST":
         name = request.POST["name"]
+        image = request.FILES['image']
         user = request.user
-        newLook = Look(user=user, name=name)
+        newLook = Look(user=user, name=name, image=image)
         newLook.save()
 
         i = 0
